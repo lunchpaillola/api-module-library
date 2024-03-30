@@ -1,0 +1,56 @@
+{
+  "name": "frigg-api-module-library",
+  "version": "1.2.0",
+  "description": "",
+  "private": true,
+  "scripts": {
+    "auto:info": "auto info",
+    "test:all": "npm test --foreground-scripts --workspaces --if-present",
+    "test:api-module-managers": "jest --testMatch='<rootDir>/api-module-library/**/manager.test.js' --globalSetup='<rootDir>/scripts/set-up-tests.js' --globalTeardown='<rootDir>/scripts/tear-down-tests.js' --watch",
+    "use:engine": "sudo n install $npm_package_engines_node && npm run use:npm",
+    "use:npm": "npm install -g npm@$npm_package_engines_npm",
+    "contributors:add": "all-contributors add",
+    "contributors:generate": "all-contributors generate"
+  },
+  "engines": {
+    "node": ">=18",
+    "npm": ">=9"
+  },
+  "author": "seanspeaks <sean.matthews@lefthook.co>",
+  "license": "MIT",
+  "workspaces": [
+    "api-module-library/*"
+  ],
+  "devDependencies": {
+    "@auto-it/all-contributors": "^11.1.1",
+    "@auto-it/conventional-commits": "^11.1.1",
+    "@auto-it/first-time-contributor": "^11.1.1",
+    "@auto-it/slack": "^11.1.1",
+    "auto": "^11.1.1",
+    "lerna": "^8.1.2",
+    "nx": "^18.1.3"
+  },
+  "repository": "friggframework/frigg",
+  "auto": {
+    "plugins": [
+      "npm",
+      "all-contributors",
+      "conventional-commits",
+      "first-time-contributor",
+      "released",
+      [
+        "slack",
+        {
+          "auth": "app",
+          "channels": [
+            "C017RNCQV70",
+            "C02F2NT7F0R"
+          ]
+        }
+      ]
+    ]
+  },
+  "dependencies": {
+    "bot": "^0.0.3"
+  }
+}
