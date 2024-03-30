@@ -1,6 +1,6 @@
 {
   "name": "frigg-api-module-library",
-  "version": "1.2.0",
+  "version": "1.1.0",
   "description": "",
   "private": true,
   "scripts": {
@@ -22,10 +22,10 @@
     "packages/*"
   ],
   "devDependencies": {
-    "@auto-it/all-contributors": "^11.1.1",
-    "@auto-it/conventional-commits": "^11.1.1",
-    "@auto-it/first-time-contributor": "^11.1.1",
-    "@auto-it/slack": "^11.1.1",
+    "@auto-it/all-contributors": "^11.1.2",
+    "@auto-it/conventional-commits": "^11.1.2",
+    "@auto-it/first-time-contributor": "^11.1.2",
+    "@auto-it/slack": "^11.1.2",
     "auto": "^11.1.1",
     "lerna": "^8.1.2",
     "nx": "^18.1.3"
