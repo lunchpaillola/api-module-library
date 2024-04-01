@@ -56,6 +56,10 @@ class Api extends OAuth2Requester {
             blogPostById: (blogPostId) => `/cms/v3/blogs/posts/${blogPostId}`,
             emailTemplates: '/content/api/v2/templates',
             emailTemplateById: (templateId) => `/content/api/v2/templates/${templateId}`,
+            lists: '/crm/v3/lists',
+            listSearch: '/crm/v3/lists/search',
+            associations: (fromObject, toObject) => `/crm/v4/associations/${fromObject}/${toObject}`,
+            associationLabels: (fromObject, toObject) => `/crm/v4/associations/${fromObject}/${toObject}/labels`,
 
         };
 
@@ -72,6 +76,31 @@ class Api extends OAuth2Requester {
         return this.authorizationUri;
     }
 
+    addJsonHeaders(options) {
+        const jsonHeaders = {
+            'Content-Type': 'application/json',
+            Accept: 'application/json',
+        };
+        options.headers = {
+            ...jsonHeaders,
+            ...options.headers,
+        }
+    }
+    async _post(options, stringify) {
+        this.addJsonHeaders(options);
+        return super._post(options, stringify);
+    }
+
+    async _patch(options, stringify) {
+        this.addJsonHeaders(options);
+        return super._patch(options, stringify);
+    }
+
+    async _put(options, stringify) {
+        this.addJsonHeaders(options);
+        return super._put(options, stringify);
+    }
+
     // **************************   Companies   **********************************
 
     async createCompany(body) {
@@ -79,10 +108,6 @@ class Api extends OAuth2Requester {
             url: this.baseUrl + this.URLs.companies,
             body: {
                 properties: body,
-            },
-            headers: {
-                'Content-Type': 'application/json',
-                Accept: 'application/json',
             },
         };
 
@@ -101,10 +126,6 @@ class Api extends OAuth2Requester {
         const options = {
             url: this.baseUrl + this.URLs.companyById(id),
             body,
-            headers: {
-                'Content-Type': 'application/json',
-                Accept: 'application/json',
-            },
         };
         return this._patch(options);
     }
@@ -113,10 +134,6 @@ class Api extends OAuth2Requester {
         const options = {
             url: this.baseUrl + this.URLs.companySearch,
             body,
-            headers: {
-                'Content-Type': 'application/json',
-                Accept: 'application/json',
-            },
         };
         return this._post(options);
     }
@@ -156,10 +173,6 @@ class Api extends OAuth2Requester {
         const options = {
             url: this.baseUrl + this.URLs.getBatchCompaniesById,
             body,
-            headers: {
-                'content-type': 'application/json',
-                accept: 'application/json',
-            },
             query: {
                 archived: 'false',
             },
@@ -174,10 +187,6 @@ class Api extends OAuth2Requester {
             url: this.baseUrl + this.URLs.contacts,
             body: {
                 properties: body,
-            },
-            headers: {
-                'Content-Type': 'application/json',
-                Accept: 'application/json',
             },
         };
 
@@ -232,10 +241,6 @@ class Api extends OAuth2Requester {
             body: {
                 properties,
             },
-            headers: {
-                'Content-Type': 'application/json',
-                Accept: 'application/json',
-            },
         }
         return this._patch(options);
     }
@@ -251,10 +256,6 @@ class Api extends OAuth2Requester {
         const options = {
             url: this.baseUrl + this.URLs.getBatchContactsById,
             body,
-            headers: {
-                'content-type': 'application/json',
-                accept: 'application/json',
-            },
             query: {
                 archived: 'false',
             },
@@ -269,10 +270,6 @@ class Api extends OAuth2Requester {
             url: this.baseUrl + this.URLs.deals,
             body: {
                 properties: body,
-            },
-            headers: {
-                'Content-Type': 'application/json',
-                Accept: 'application/json',
             },
         };
 
@@ -353,9 +350,6 @@ class Api extends OAuth2Requester {
         const options = {
             url: this.baseUrl + this.URLs.searchDeals,
             body: searchBody,
-            headers: {
-                'content-type': 'application/json',
-            },
         };
         return this._post(options);
     }
@@ -377,10 +371,6 @@ class Api extends OAuth2Requester {
         const options = {
             url: this.baseUrl + this.URLs.contactList,
             body,
-            headers: {
-                'Content-Type': 'application/json',
-                Accept: 'application/json',
-            },
         };
 
         return this._post(options);
@@ -414,10 +404,6 @@ class Api extends OAuth2Requester {
         const options = {
             url: this.baseUrl + this.URLs.contactListById(listId),
             body,
-            headers: {
-                'Content-Type': 'application/json',
-                Accept: 'application/json',
-            },
         };
         return this._post(options);
     }
@@ -428,10 +414,6 @@ class Api extends OAuth2Requester {
         const options = {
             url: this.baseUrl + this.URLs.customObjectSchemas,
             body,
-            headers: {
-                'Content-Type': 'application/json',
-                Accept: 'application/json',
-            },
         };
         if (this.api_key) {
             options.query = {hapikey: this.api_key};
@@ -492,10 +474,6 @@ class Api extends OAuth2Requester {
                 this.baseUrl +
                 this.URLs.customObjectSchemaByObjectType(objectType),
             body,
-            headers: {
-                'Content-Type': 'application/json',
-                Accept: 'application/json',
-            },
         };
 
         if (this.api_key) {
@@ -511,10 +489,6 @@ class Api extends OAuth2Requester {
         const options = {
             url: this.baseUrl + this.URLs.customObjects(objectType),
             body,
-            headers: {
-                'Content-Type': 'application/json',
-                Accept: 'application/json',
-            },
         };
         if (this.api_key) {
             options.query = {hapikey: this.api_key};
@@ -527,10 +501,6 @@ class Api extends OAuth2Requester {
         const options = {
             url: this.baseUrl + this.URLs.bulkCreateCustomObjects(objectType),
             body,
-            headers: {
-                'Content-Type': 'application/json',
-                Accept: 'application/json',
-            },
         };
         if (this.api_key) {
             options.query = {hapikey: this.api_key};
@@ -558,13 +528,9 @@ class Api extends OAuth2Requester {
         const options = {
             method: 'POST',
             body: JSON.stringify(body),
-            headers: {
-                'Content-Type': 'application/json',
-                Accept: 'application/json',
-            },
             query: {},
         };
-
+        this.addJsonHeaders(options);
         if (this.api_key) {
             options.query.hapikey = this.api_key;
         }
@@ -589,10 +555,6 @@ class Api extends OAuth2Requester {
         const options = {
             url: this.baseUrl + this.URLs.bulkReadCustomObjects(objectType),
             body,
-            headers: {
-                'Content-Type': 'application/json',
-                Accept: 'application/json',
-            },
         };
         if (this.api_key) {
             options.query = {hapikey: this.api_key};
@@ -618,10 +580,6 @@ class Api extends OAuth2Requester {
         const options = {
             url: this.baseUrl + this.URLs.customObjectsSearch(objectType),
             body,
-            headers: {
-                'Content-Type': 'application/json',
-                Accept: 'application/json',
-            },
         };
         if (this.api_key) {
             options.query = {hapikey: this.api_key};
@@ -634,10 +592,6 @@ class Api extends OAuth2Requester {
         const options = {
             url: this.baseUrl + this.URLs.customObjectById(objectType, objId),
             body,
-            headers: {
-                'Content-Type': 'application/json',
-                Accept: 'application/json',
-            },
         };
 
         if (this.api_key) {
@@ -651,10 +605,6 @@ class Api extends OAuth2Requester {
         const options = {
             url: this.baseUrl + this.URLs.bulkUpdateCustomObjects(objectType),
             body,
-            headers: {
-                'Content-Type': 'application/json',
-                Accept: 'application/json',
-            },
         };
         if (this.api_key) {
             options.query = {hapikey: this.api_key};
@@ -680,10 +630,6 @@ class Api extends OAuth2Requester {
         const options = {
             url: this.baseUrl + this.URLs.properties(objType),
             body,
-            headers: {
-                'Content-Type': 'application/json',
-                Accept: 'application/json',
-            },
         };
 
         return this._post(options);
@@ -709,10 +655,6 @@ class Api extends OAuth2Requester {
         const options = {
             url: this.baseUrl + this.URLs.propertiesByName(objType, propName),
             body,
-            headers: {
-                'Content-Type': 'application/json',
-                Accept: 'application/json',
-            },
         };
         return this._patch(options);
     }
@@ -772,11 +714,6 @@ class Api extends OAuth2Requester {
         const options = {
             url: `${this.baseUrl}${this.URLs.landingPageById(objId)}${draft}`,
             body,
-            headers: {
-                'Content-Type': 'application/json',
-                Accept: 'application/json',
-
-            }
         };
         return this._patch(options);
     }
@@ -795,11 +732,6 @@ class Api extends OAuth2Requester {
                 id: objId,
                 publishDate
             },
-            headers: {
-                'Content-Type': 'application/json',
-                Accept: 'application/json',
-
-            }
         };
         return this._post(options);
     }
@@ -827,11 +759,6 @@ class Api extends OAuth2Requester {
         const options = {
             url: `${this.baseUrl}${this.URLs.sitePageById(objId)}${draft}`,
             body: body,
-            headers: {
-                'Content-Type': 'application/json',
-                Accept: 'application/json',
-
-            }
         };
         return this._patch(options);
     }
@@ -850,11 +777,6 @@ class Api extends OAuth2Requester {
                 id: objId,
                 publishDate
             },
-            headers: {
-                'Content-Type': 'application/json',
-                Accept: 'application/json',
-
-            }
         };
         return this._post(options);
     }
@@ -883,11 +805,6 @@ class Api extends OAuth2Requester {
         const options = {
             url: `${this.baseUrl}${this.URLs.blogPostById(objId)}${draft}`,
             body: body,
-            headers: {
-                'Content-Type': 'application/json',
-                Accept: 'application/json',
-
-            }
         };
         return this._patch(options);
     }
@@ -906,11 +823,6 @@ class Api extends OAuth2Requester {
                 id: objId,
                 publishDate
             },
-            headers: {
-                'Content-Type': 'application/json',
-                Accept: 'application/json',
-
-            }
         };
         return this._post(options);
     }
@@ -938,11 +850,6 @@ class Api extends OAuth2Requester {
         const options = {
             url: `${this.baseUrl}${this.URLs.emailTemplateById(objId)}`,
             body: body,
-            headers: {
-                'Content-Type': 'application/json',
-                Accept: 'application/json',
-
-            }
         };
         return this._put(options);
     }
@@ -951,11 +858,6 @@ class Api extends OAuth2Requester {
         const options = {
             url: `${this.baseUrl}${this.URLs.emailTemplates}`,
             body: body,
-            headers: {
-                'Content-Type': 'application/json',
-                Accept: 'application/json',
-
-            }
         };
         return this._post(options);
     }
@@ -997,10 +899,6 @@ class Api extends OAuth2Requester {
                 this.baseUrl +
                 this.URLs.getBatchAssociations(fromObject, toObject),
             body: postBody,
-            headers: {
-                'content-type': 'application/json',
-                accept: 'application/json',
-            },
         };
 
         const res = await this._post(options);
@@ -1016,6 +914,26 @@ class Api extends OAuth2Requester {
         }
         propsString = propsString.slice(0, propsString.length - 1);
         return propsString;
+    }
+
+    async getAssociationLabels(fromObjType, toObjType) {
+        const options = {
+            url: this.baseUrl + this.URLs.associationLabels(fromObjType, toObjType),
+        };
+        return this._get(options);
+    }
+
+    async searchLists(query = "", offset = 0, count = 500, additionalProperties = []) {
+        const options = {
+            url: this.baseUrl + this.URLs.listSearch,
+            body: {
+                query,
+                offset,
+                count,
+                additionalProperties
+            },
+        };
+        return this._post(options);
     }
 }
 

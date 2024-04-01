@@ -1,4 +1,4 @@
-const {Authenticator} = require('@friggframework/devtools');
+const {Authenticator} = require('@friggframework/test');
 const {Api} = require('../api');
 const config = require('../defaultConfig.json');
 
@@ -463,7 +463,7 @@ describe(`${config.label} API tests`, () => {
         });
     });
 
-    describe.only('HS Custom Objects', () => {
+    describe('HS Custom Objects', () => {
         let allCustomObjects;
         const testObjType = 'tests';
         let oneWord;
@@ -623,6 +623,23 @@ describe(`${config.label} API tests`, () => {
                 return {id: o.id}
             });
             await api.bulkArchiveCustomObjects(testObjType, {inputs});
+        })
+    })
+
+    describe('HS List Search', () => {
+        it('Should get a list of lists', async () => {
+            const response = await api.searchLists();
+            expect(response).toBeDefined();
+            expect(response.lists).toHaveProperty('length');
+        })
+    });
+
+    describe('Association Labels', () => {
+        it('Should get association labels', async () => {
+            const labels = await api.getAssociationLabels('CONTACT', 'COMPANY');
+            expect(labels).toBeDefined();
+            expect(labels.results).toHaveProperty('length');
+            expect(labels.results.find(label => label.label === 'Primary')).toBeTruthy();
         })
     })
 });
