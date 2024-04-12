@@ -14,12 +14,12 @@ describe(`${config.label} API tests`, () => {
 
     describe('List tasks', () => {
         it('Should throw if invalid params are provided', async () => {
-						api._get = jest.fn(() => Promise.resolve({data: []}))
+            api._get = jest.fn(() => Promise.resolve({data: []}))
             expect(api.listTasks()).rejects.toThrow();
-						expect(api.listTasks({})).rejects.toThrow();
-						expect(api.listTasks({workspaceId: '123'})).rejects.toThrow();
-						expect(api.listTasks({workspaceId: '123', assigneeId: undefined})).rejects.toThrow();
-						expect(api.listTasks({workspaceId: '123', assigneeId: '123'})).resolves.toEqual({data: []});
+            expect(api.listTasks({})).rejects.toThrow();
+            expect(api.listTasks({workspaceId: '123'})).rejects.toThrow();
+            expect(api.listTasks({workspaceId: '123', assigneeId: undefined})).rejects.toThrow();
+            expect(api.listTasks({workspaceId: '123', assigneeId: '123'})).resolves.toEqual({data: []});
 
         });
     });

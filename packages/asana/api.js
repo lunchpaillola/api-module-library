@@ -15,32 +15,32 @@ class Api extends OAuth2Requester {
         this.baseUrl = 'https://app.asana.com/api/1.0';
 
         this.URLs = {
-						// User info
-						userInfo: '/openid_connect/userinfo',
+            // User info
+            userInfo: '/openid_connect/userinfo',
 
-						// Projects
+            // Projects
             projects: '/projects',
             projectById: (projectId) => `/projects/${projectId}`,
 
-						// Tags
-						tags: '/tags',
-						tagById: (tagId) => `/tags/${tagId}`,
+            // Tags
+            tags: '/tags',
+            tagById: (tagId) => `/tags/${tagId}`,
 
-						// Tasks
-						tasks: '/tasks',
-						taskById: (taskId) => `/tasks/${taskId}`,
+            // Tasks
+            tasks: '/tasks',
+            taskById: (taskId) => `/tasks/${taskId}`,
 
-						// Users
-						users: '/users',
-						userById: (userId) => `/users/${userId}`,
+            // Users
+            users: '/users',
+            userById: (userId) => `/users/${userId}`,
 
-						// Workspaces
-						workspaces: '/workspaces',
-						workspacesById: (workspaceId) => `/workspaces/${workspaceId}`,
+            // Workspaces
+            workspaces: '/workspaces',
+            workspacesById: (workspaceId) => `/workspaces/${workspaceId}`,
         };
 
         this.authorizationUri = encodeURI(
-					  `https://app.asana.com/-/oauth_authorize?response_type=code&client_id=${this.client_id}&redirect_uri=${this.redirect_uri}&state=${this.state}&scope=${this.scope}`
+            `https://app.asana.com/-/oauth_authorize?response_type=code&client_id=${this.client_id}&redirect_uri=${this.redirect_uri}&state=${this.state}&scope=${this.scope}`
         );
         this.tokenUri = 'https://app.asana.com/-/oauth_token';
 
@@ -77,232 +77,232 @@ class Api extends OAuth2Requester {
         return super._put(options, stringify);
     }
 
-		// **************************   User details  **********************************
+    // **************************   User details  **********************************
 
-		async getUserDetails() {
-				const options = {
-						url: this.baseUrl + this.URLs.userInfo,
-				};
+    async getUserDetails() {
+        const options = {
+            url: this.baseUrl + this.URLs.userInfo,
+        };
 
-				return this._get(options);
-		}
+        return this._get(options);
+    }
 
     // **************************   Projects   **********************************
 
     async createProject(body) {
-			const options = {
-					url: this.baseUrl + this.URLs.projects,
-					body: {
-							data: body,
-					},
-			};
+      const options = {
+          url: this.baseUrl + this.URLs.projects,
+          body: {
+              data: body,
+          },
+      };
 
-			return this._post(options);
-	  }
+      return this._post(options);
+    }
 
-		async listProjects(params) {
-				const options = {
-						url: this.baseUrl + this.URLs.projects,
-						query: params
-				};
+    async listProjects(params) {
+        const options = {
+            url: this.baseUrl + this.URLs.projects,
+            query: params
+        };
 
-				return this._get(options);
-		}
+        return this._get(options);
+    }
 
-		async updateProject(id, body) {
-				const options = {
-						url: this.baseUrl + this.URLs.projectById(id),
-						body: {
-								data: body,
-						},
-				};
-				return this._put(options);
-		}
+    async updateProject(id, body) {
+        const options = {
+            url: this.baseUrl + this.URLs.projectById(id),
+            body: {
+                data: body,
+            },
+        };
+        return this._put(options);
+    }
 
-		async deleteProject(id) {
-				const options = {
-						url: this.baseUrl + this.URLs.projectById(id),
-				};
+    async deleteProject(id) {
+        const options = {
+            url: this.baseUrl + this.URLs.projectById(id),
+        };
 
-				return this._delete(options);
-		}
+        return this._delete(options);
+    }
 
-		async getProjectById(id) {
-				const options = {
-						url: this.baseUrl + this.URLs.projectById(id),
-				};
+    async getProjectById(id) {
+        const options = {
+            url: this.baseUrl + this.URLs.projectById(id),
+        };
 
-				return this._get(options);
-		}
+        return this._get(options);
+    }
 
-		// **************************   Tags   **********************************
+    // **************************   Tags   **********************************
 
-		async createTag(body) {
-				const options = {
-						url: this.baseUrl + this.URLs.tags,
-						body: {
-								data: body,
-						},
-				};
+    async createTag(body) {
+        const options = {
+            url: this.baseUrl + this.URLs.tags,
+            body: {
+                data: body,
+            },
+        };
 
-				return this._post(options);
-		}
+        return this._post(options);
+    }
 
-		async listTags() {
-				const options = {
-						url: this.baseUrl + this.URLs.tags,
-				};
+    async listTags() {
+        const options = {
+            url: this.baseUrl + this.URLs.tags,
+        };
 
-				return this._get(options);
-		}
+        return this._get(options);
+    }
 
-		async updateTag(id, body) {
-				const options = {
-						url: this.baseUrl + this.URLs.tagById(id),
-						body: {
-								data: body,
-						},
-				};
-				return this._put(options);
-		}
+    async updateTag(id, body) {
+        const options = {
+            url: this.baseUrl + this.URLs.tagById(id),
+            body: {
+                data: body,
+            },
+        };
+        return this._put(options);
+    }
 
-		async deleteTag(id) {
-				const options = {
-						url: this.baseUrl + this.URLs.tagById(id),
-				};
-				return this._delete(options);
-		}
+    async deleteTag(id) {
+        const options = {
+            url: this.baseUrl + this.URLs.tagById(id),
+        };
+        return this._delete(options);
+    }
 
-		async getTagById(id) {
-				const options = {
-						url: this.baseUrl + this.URLs.tagById(id),
-				};
-				return this._get(options);
-		}
+    async getTagById(id) {
+        const options = {
+            url: this.baseUrl + this.URLs.tagById(id),
+        };
+        return this._get(options);
+    }
 
-		// **************************   Tasks   **********************************
+    // **************************   Tasks   **********************************
 
-		async createTask(body) {
-				const options = {
-						url: this.baseUrl + this.URLs.tasks,
-						body: {
-								data: body,
-						},
-				};
+    async createTask(body) {
+        const options = {
+            url: this.baseUrl + this.URLs.tasks,
+            body: {
+                data: body,
+            },
+        };
 
-				return this._post(options);
-		}
+        return this._post(options);
+    }
 
-		async listTasks(params) {
-				const workspaceId = get(params, 'workspaceId');
-				const assigneeId = get(params, 'assigneeId');	
+    async listTasks(params) {
+        const workspaceId = get(params, 'workspaceId');
+        const assigneeId = get(params, 'assigneeId');  
 
-				const options = {
-						url: this.baseUrl + this.URLs.tasks,
-						query: {
-							workspace: workspaceId,
-							assignee: assigneeId,
-						}
-				};
+        const options = {
+            url: this.baseUrl + this.URLs.tasks,
+            query: {
+              workspace: workspaceId,
+              assignee: assigneeId,
+            }
+        };
 
-				return this._get(options);
-		}
+        return this._get(options);
+    }
 
-		async updateTask(id, body) {
-				const options = {
-						url: this.baseUrl + this.URLs.taskById(id),
-						body: {
-								data: body,
-						},
-				};
-				return this._put(options);
-		}
+    async updateTask(id, body) {
+        const options = {
+            url: this.baseUrl + this.URLs.taskById(id),
+            body: {
+                data: body,
+            },
+        };
+        return this._put(options);
+    }
 
-		async deleteTask(id) {
-				const options = {
-						url: this.baseUrl + this.URLs.taskById(id),
-				};
-				return this._delete(options);
-		}
+    async deleteTask(id) {
+        const options = {
+            url: this.baseUrl + this.URLs.taskById(id),
+        };
+        return this._delete(options);
+    }
 
-		async getTaskById(id) {
-				const options = {
-						url: this.baseUrl + this.URLs.taskById(id),
-				};
-				return this._get(options);
-		}
+    async getTaskById(id) {
+        const options = {
+            url: this.baseUrl + this.URLs.taskById(id),
+        };
+        return this._get(options);
+    }
 
-		// **************************   Users   **********************************
+    // **************************   Users   **********************************
 
-		async createUser(body) {
-				const options = {
-						url: this.baseUrl + this.URLs.users,
-						body: {
-								data: body,
-						},
-				};
+    async createUser(body) {
+        const options = {
+            url: this.baseUrl + this.URLs.users,
+            body: {
+                data: body,
+            },
+        };
 
-				return this._post(options);
-		}
+        return this._post(options);
+    }
 
-		async listUsers() {
-				const options = {
-						url: this.baseUrl + this.URLs.users,
-				};
+    async listUsers() {
+        const options = {
+            url: this.baseUrl + this.URLs.users,
+        };
 
-				return this._get(options);
-		}
+        return this._get(options);
+    }
 
-		async updateUser(id, body) {
-				const options = {
-						url: this.baseUrl + this.URLs.userById(id),
-						body: {
-								data: body,
-						},
-				};
-				return this._put(options);
-		}
+    async updateUser(id, body) {
+        const options = {
+            url: this.baseUrl + this.URLs.userById(id),
+            body: {
+                data: body,
+            },
+        };
+        return this._put(options);
+    }
 
-		async deleteUser(id) {
-				const options = {
-						url: this.baseUrl + this.URLs.userById(id),
-				};
-				return this._delete(options);
-		}
+    async deleteUser(id) {
+        const options = {
+            url: this.baseUrl + this.URLs.userById(id),
+        };
+        return this._delete(options);
+    }
 
-		async getUserById(id) {
-				const options = {
-						url: this.baseUrl + this.URLs.userById(id),
-				};
-				return this._get(options);
-		}
+    async getUserById(id) {
+        const options = {
+            url: this.baseUrl + this.URLs.userById(id),
+        };
+        return this._get(options);
+    }
 
-		// **************************   Workspaces   **********************************
+    // **************************   Workspaces   **********************************
 
-		async listWorkspaces() {
-				const options = {
-						url: this.baseUrl + this.URLs.workspaces,
-				};
+    async listWorkspaces() {
+        const options = {
+            url: this.baseUrl + this.URLs.workspaces,
+        };
 
-				return this._get(options);
-		}
+        return this._get(options);
+    }
 
-		async getWorkspaceById(id) {
-				const options = {
-						url: this.baseUrl + this.URLs.workspacesById(id),
-				};
-				return this._get(options);
-		}
+    async getWorkspaceById(id) {
+        const options = {
+            url: this.baseUrl + this.URLs.workspacesById(id),
+        };
+        return this._get(options);
+    }
 
-		async updateWorkspace(id, body) {
-				const options = {
-						url: this.baseUrl + this.URLs.workspacesById(id),
-						body: {
-								data: body,
-						},
-				};
-				return this._put(options);
-		}
+    async updateWorkspace(id, body) {
+        const options = {
+            url: this.baseUrl + this.URLs.workspacesById(id),
+            body: {
+                data: body,
+            },
+        };
+        return this._put(options);
+    }
 
 }
 
