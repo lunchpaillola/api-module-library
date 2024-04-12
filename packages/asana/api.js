@@ -37,10 +37,13 @@ class Api extends OAuth2Requester {
 						// Users
 						users: '/users',
 						userById: (userId) => `/users/${userId}`,
+
+						// Workspaces
+						workspaces: '/workspaces',
         };
 
         this.authorizationUri = encodeURI(
-					  `https://app.asana.com/-/oauth_authorize?response_type=code&client_id=${this.client_id}&redirect_uri=${this.redirect_uri}&state=${this.state}`
+					  `https://app.asana.com/-/oauth_authorize?response_type=code&client_id=${this.client_id}&redirect_uri=${this.redirect_uri}&state=${this.state}&scope=${this.scope}`
         );
         this.tokenUri = 'https://app.asana.com/-/oauth_token';
 
@@ -231,9 +234,16 @@ class Api extends OAuth2Requester {
 				return this._post(options);
 		}
 
-		async listTasks() {
+		async listTasks(params) {
+				const workspaceId = get(params, 'workspaceId');
+				const assigneeId = get(params, 'assigneeId');	
+
 				const options = {
 						url: this.baseUrl + this.URLs.tasks,
+						query: {
+							workspace: workspaceId,
+							assignee: assigneeId,
+						}
 				};
 
 				return this._get(options);
@@ -301,6 +311,16 @@ class Api extends OAuth2Requester {
 				const options = {
 						url: this.baseUrl + this.URLs.userById(id),
 				};
+				return this._get(options);
+		}
+
+		// **************************   Workspaces   **********************************
+
+		async listWorkspaces() {
+				const options = {
+						url: this.baseUrl + this.URLs.workspaces,
+				};
+
 				return this._get(options);
 		}
 
