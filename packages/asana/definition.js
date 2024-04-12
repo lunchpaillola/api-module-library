@@ -18,8 +18,8 @@ const Definition = {
         getEntityDetails: async function (api, callbackParams, tokenResponse, userId) {
             const userDetails = await api.getUserDetails();
             return {
-                identifiers: {externalId: userDetails.portalId, user: userId},
-                details: {name: userDetails.hub_domain},
+                identifiers: {externalId: userDetails.sub, user: userId},
+                details: {name: userDetails.name, email: userDetails.email},
             }
         },
         apiPropertiesToPersist: {
