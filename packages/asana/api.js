@@ -5,6 +5,7 @@ const {OAuth2Requester, get} = require('@friggframework/core');
 // - https://developers.asana.com/reference/tags
 // - https://developers.asana.com/reference/tasks
 // - https://developers.asana.com/reference/users
+// - https://developers.asana.com/reference/workspaces
 
 class Api extends OAuth2Requester {
     constructor(params) {
@@ -35,6 +36,7 @@ class Api extends OAuth2Requester {
 
 						// Workspaces
 						workspaces: '/workspaces',
+						workspacesById: (workspaceId) => `/workspaces/${workspaceId}`,
         };
 
         this.authorizationUri = encodeURI(
@@ -283,6 +285,23 @@ class Api extends OAuth2Requester {
 				};
 
 				return this._get(options);
+		}
+
+		async getWorkspaceById(id) {
+				const options = {
+						url: this.baseUrl + this.URLs.workspacesById(id),
+				};
+				return this._get(options);
+		}
+
+		async updateWorkspace(id, body) {
+				const options = {
+						url: this.baseUrl + this.URLs.workspacesById(id),
+						body: {
+								data: body,
+						},
+				};
+				return this._put(options);
 		}
 
 }
