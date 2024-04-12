@@ -2,7 +2,6 @@ const {OAuth2Requester, get} = require('@friggframework/core');
 
 // core objects
 // - https://developers.asana.com/reference/projects
-// - https://developers.asana.com/reference/stories
 // - https://developers.asana.com/reference/tags
 // - https://developers.asana.com/reference/tasks
 // - https://developers.asana.com/reference/users
@@ -21,10 +20,6 @@ class Api extends OAuth2Requester {
 						// Projects
             projects: '/projects',
             projectById: (projectId) => `/projects/${projectId}`,
-
-						// Stories
-            stories: '/stories',
-            storyById: (storyId) => `/stories/${storyId}`,
 
 						// Tags
 						tags: '/tags',
@@ -96,16 +91,17 @@ class Api extends OAuth2Requester {
 			const options = {
 					url: this.baseUrl + this.URLs.projects,
 					body: {
-							properties: body,
+							data: body,
 					},
 			};
 
 			return this._post(options);
 	  }
 
-		async listProjects() {
+		async listProjects(params) {
 				const options = {
 						url: this.baseUrl + this.URLs.projects,
+						query: params
 				};
 
 				return this._get(options);
@@ -114,7 +110,9 @@ class Api extends OAuth2Requester {
 		async updateProject(id, body) {
 				const options = {
 						url: this.baseUrl + this.URLs.projectById(id),
-						body,
+						body: {
+								data: body,
+						},
 				};
 				return this._put(options);
 		}
@@ -132,49 +130,6 @@ class Api extends OAuth2Requester {
 						url: this.baseUrl + this.URLs.projectById(id),
 				};
 
-				return this._get(options);
-		}
-
-		// **************************   Stories   **********************************
-
-		async createStory(body) {
-				const options = {
-						url: this.baseUrl + this.URLs.stories,
-						body: {
-								data: body,
-						},
-				};
-
-				return this._post(options);
-		}
-
-		async listStories() {
-				const options = {
-						url: this.baseUrl + this.URLs.stories,
-				};
-
-				return this._get(options);
-		}
-
-		async updateStory(id, body) {
-				const options = {
-						url: this.baseUrl + this.URLs.storyById(id),
-						body,
-				};
-				return this._put(options);
-		}
-
-		async deleteStory(id) {
-				const options = {
-						url: this.baseUrl + this.URLs.storyById(id),
-				};
-				return this._delete(options);
-		}
-
-		async getStoryById(id) {
-				const options = {
-						url: this.baseUrl + this.URLs.storyById(id),
-				};
 				return this._get(options);
 		}
 
@@ -202,7 +157,9 @@ class Api extends OAuth2Requester {
 		async updateTag(id, body) {
 				const options = {
 						url: this.baseUrl + this.URLs.tagById(id),
-						body,
+						body: {
+								data: body,
+						},
 				};
 				return this._put(options);
 		}
@@ -252,7 +209,9 @@ class Api extends OAuth2Requester {
 		async updateTask(id, body) {
 				const options = {
 						url: this.baseUrl + this.URLs.taskById(id),
-						body,
+						body: {
+								data: body,
+						},
 				};
 				return this._put(options);
 		}
@@ -295,7 +254,9 @@ class Api extends OAuth2Requester {
 		async updateUser(id, body) {
 				const options = {
 						url: this.baseUrl + this.URLs.userById(id),
-						body,
+						body: {
+								data: body,
+						},
 				};
 				return this._put(options);
 		}
