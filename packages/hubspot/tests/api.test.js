@@ -497,7 +497,7 @@ describe(`${config.label} API tests`, () => {
         });
     });
 
-    describe.only('Custom Object Schemas', () => {
+    describe('Custom Object Schemas', () => {
         const testSchema = {
             "labels": {"singular": "Test Object", "plural": "Test Objects"},
             "requiredProperties": ["word"],
@@ -709,7 +709,7 @@ describe(`${config.label} API tests`, () => {
         })
     })
 
-    describe.only('HS List Requests', () => {
+    describe('HS List Requests', () => {
         it('Should get a list of lists', async () => {
             const response = await api.searchLists();
             expect(response).toBeDefined();
@@ -740,7 +740,7 @@ describe(`${config.label} API tests`, () => {
         })
     });
 
-    describe.only('Association Labels', () => {
+    describe('Association Labels', () => {
         it('Should get association labels', async () => {
             const labels = await api.getAssociationLabels('COMPANY', 'CONTACT');
             expect(labels).toBeDefined();
