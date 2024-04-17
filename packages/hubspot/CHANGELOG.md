@@ -1,3 +1,26 @@
+# v1.1.4 (Wed Apr 17 2024)
+
+#### 🐛 Bug Fix
+
+- Add HubSpot list membership, creation and deletion requests [#3](https://github.com/friggframework/api-module-library/pull/3) ([@MichaelRyanWebber](https://github.com/MichaelRyanWebber))
+- remove .only tests ([@MichaelRyanWebber](https://github.com/MichaelRyanWebber))
+- update to getListById to follow convention in this api at least ([@MichaelRyanWebber](https://github.com/MichaelRyanWebber))
+- add getList ([@MichaelRyanWebber](https://github.com/MichaelRyanWebber))
+- remove client reference ([@MichaelRyanWebber](https://github.com/MichaelRyanWebber))
+- add list addition, creation, deletion ([@MichaelRyanWebber](https://github.com/MichaelRyanWebber))
+- remove unnecessary dependency [#1](https://github.com/friggframework/api-module-library/pull/1) ([@MichaelRyanWebber](https://github.com/MichaelRyanWebber))
+- add methods and tests for list search and label retrieval [#1](https://github.com/friggframework/api-module-library/pull/1) ([@MichaelRyanWebber](https://github.com/MichaelRyanWebber))
+
+#### ⚠️ Pushed to `main`
+
+- Publish ([@MichaelRyanWebber](https://github.com/MichaelRyanWebber))
+
+#### Authors: 1
+
+- [@MichaelRyanWebber](https://github.com/MichaelRyanWebber)
+
+---
+
 # v1.1.3 (Tue Apr 02 2024)
 
 #### 🐛 Bug Fix
