@@ -737,7 +737,7 @@ describe(`${config.label} API tests`, () => {
 
     describe.only('Association Labels', () => {
         it('Should get association labels', async () => {
-            const labels = await api.getAssociationLabels('COMPANY', 'fourtytwomattersappdata');
+            const labels = await api.getAssociationLabels('COMPANY', 'CONTACT');
             expect(labels).toBeDefined();
             expect(labels.results).toHaveProperty('length');
             expect(labels.results.find(label => label.label === 'Primary')).toBeTruthy();
