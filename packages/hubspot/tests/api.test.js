@@ -720,6 +720,11 @@ describe(`${config.label} API tests`, () => {
             const {list} = await api.createList('Test List', '0-2');
             createdListId = list.listId;
         });
+        it('Should get a list', async () => {
+            const response = await api.getList(createdListId);
+            expect(response).toBeDefined();
+            expect(response.list.listId).toBe(createdListId);
+        })
         it('Should add a record to list', async () => {
             const companyResponse = await api.listCompanies();
             const someCompanyId = companyResponse.results[0].id;
