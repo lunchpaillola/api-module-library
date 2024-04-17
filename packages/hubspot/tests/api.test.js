@@ -721,7 +721,7 @@ describe(`${config.label} API tests`, () => {
             createdListId = list.listId;
         });
         it('Should get a list', async () => {
-            const response = await api.getList(createdListId);
+            const response = await api.getListById(createdListId);
             expect(response).toBeDefined();
             expect(response.list.listId).toBe(createdListId);
         })

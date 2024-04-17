@@ -938,7 +938,7 @@ class Api extends OAuth2Requester {
         return this._post(options);
     }
 
-    async getList(listId) {
+    async getListById(listId) {
         const options = {
             url: this.baseUrl + this.URLs.listById(listId),
         };
