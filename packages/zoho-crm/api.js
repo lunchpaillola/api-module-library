@@ -49,6 +49,32 @@ class Api extends OAuth2Requester {
         return response;
     }
 
+    addJsonHeaders(options) {
+        const jsonHeaders = {
+            'content-type': 'application/json',
+            Accept: 'application/json',
+        };
+        options.headers = {
+            ...jsonHeaders,
+            ...options.headers,
+        }
+    }
+
+    async _post(options, stringify) {
+        this.addJsonHeaders(options);
+        return super._post(options, stringify);
+    }
+
+    async _patch(options, stringify) {
+        this.addJsonHeaders(options);
+        return super._patch(options, stringify);
+    }
+
+    async _put(options, stringify) {
+        this.addJsonHeaders(options);
+        return super._put(options, stringify);
+    }
+
     // **************************   Users   **********************************
     
     async listUsers(queryParams = {}) {
@@ -69,20 +95,20 @@ class Api extends OAuth2Requester {
     // **************************   Organizations   **********************************
 
     async getOrganization() {
-        return this._get({url: this.baseUrl + this.URLs.organization})
+        return this._get({url: this.baseUrl + this.URLs.organization});
     }
 
     // **************************   Roles   **********************************
     
     async listRoles() {
-        return this._get({url: this.baseUrl + this.URLs.roles})
+        return this._get({url: this.baseUrl + this.URLs.roles});
     }
 
-    async createRole() {
+    async createRole(body = {}) {
         return this._post({
             url: this.baseUrl + this.URLs.roles,
-            
-        })
+            body: body
+        });
     }
 }
 
