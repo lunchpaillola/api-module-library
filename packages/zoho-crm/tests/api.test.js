@@ -62,7 +62,7 @@ describe(`${config.label} API tests`, () => {
             expect(response.roles[0].message).toBe('Role updated');
         });
 
-        it('should get the newly created Role by ID and return the updated values', async () => {
+        it('should receive the updated values when getting the newly created User by ID', async () => {
             const response = await api.getRole(newRoleId);
             expect(response).toHaveProperty('roles');
             expect(response.roles[0].id).toBe(newRoleId);
@@ -70,7 +70,7 @@ describe(`${config.label} API tests`, () => {
             expect(response.roles[0].description).toBe(updatedDescription);
         });
 
-        it('should delete the newly created Role', async () => {
+        it('should delete the newly created Role by ID', async () => {
             // To delete a Role, the api requires that we send it the ID of
             // another Role, to which all users will be transfered after the delete.
             // We rely on one of the existing Roles, whose ID we saved earlier.
@@ -140,7 +140,7 @@ describe(`${config.label} API tests`, () => {
             expect(response.users[0].message).toBe('User updated');
         });
 
-        it('should get the newly created User by ID and return the updated values', async () => {
+        it('should receive the updated values when getting the newly created User by ID', async () => {
             const response = await api.getUser(newUserId);
             expect(response).toHaveProperty('users');
             expect(response.users[0].id).toBe(newUserId);
@@ -148,7 +148,7 @@ describe(`${config.label} API tests`, () => {
             expect(response.users[0].email).toBe(updatedEmail);
         });
 
-        it('should delete the newly created User', async () => {
+        it('should delete the newly created User by ID', async () => {
             const response = await api.deleteUser(newUserId);
             expect(response).toHaveProperty('users');
             expect(response.users[0].code).toBe('SUCCESS');

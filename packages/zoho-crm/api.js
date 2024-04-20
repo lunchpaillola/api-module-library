@@ -33,6 +33,8 @@ class Api extends OAuth2Requester {
     }
 
     async getTokenFromCode(code) {
+        // I had to override OAuth2Requester.getTokenFromCode method so I could send a form-data,
+        // as described in the docs: https://www.zoho.com/crm/developer/docs/api/v6/access-refresh.html
         const formData = new FormData();
         formData.append('grant_type', 'authorization_code');
         formData.append('client_id', this.client_id);
@@ -83,7 +85,8 @@ class Api extends OAuth2Requester {
     }
 
     // **************************   Users   **********************************
-    
+    // https://www.zoho.com/crm/developer/docs/api/v6/get-users.html
+
     async listUsers(queryParams = {}) {
         return this._get({
             url: this.baseUrl + this.URLs.users,
@@ -118,6 +121,7 @@ class Api extends OAuth2Requester {
     }
 
     // **************************   Roles   **********************************
+    // https://www.zoho.com/crm/developer/docs/api/v6/get-roles.html
     
     async listRoles() {
         return this._get({
@@ -153,6 +157,7 @@ class Api extends OAuth2Requester {
     }
 
     // **************************   Profiles   **********************************
+    // https://www.zoho.com/crm/developer/docs/api/v6/get-profiles.html
 
     async listProfiles() {
         return this._get({
