@@ -160,4 +160,36 @@ describe(`${config.label} API tests`, () => {
         });
     });
 
+    describe('Test Profile resource', () => {
+        it('should list all Profiles', async () => {
+            const response = await api.listProfiles();
+            expect(response).toHaveProperty('profiles');
+            expect(response.profiles).toBeInstanceOf(Array);
+        });
+
+        it.skip('should create a new Profile', async () => {
+            // TODO
+        });
+
+        it.skip('should get the newly created Profile by ID', async () => {
+            // TODO
+        });
+
+        it.skip('should update the newly created Profile by ID', async () => {
+            // TODO
+        });
+
+        it.skip('should receive the updated values when getting the newly created Profile by ID', async () => {
+            // TODO
+        });
+
+        it.skip('should delete the newly created Profile by ID', async () => {
+            // TODO
+        });
+
+        it.skip('should throw FetchError when trying to create with empty params', () => {
+            // TODO
+        });
+    });
+
 });
