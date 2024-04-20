@@ -50,7 +50,7 @@ If you've already done this, skip to the next section.
 
 
 2. Grab your Client ID and Client Secret from the Zoho CRM API Console and paste them into your local `.env` file. It should look something like this:
-    ```
+    ```shell
     ZOHO_CRM_CLIENT_ID=your_client_id
     ZOHO_CRM_CLIENT_SECRET=your_client_secret
     ZOHO_CRM_SCOPE=ZohoCRM.users.ALL,ZohoCRM.org.ALL,ZohoCRM.settings.roles.ALL,ZohoCRM.settings.profiles.ALL
