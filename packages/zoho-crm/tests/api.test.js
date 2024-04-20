@@ -107,8 +107,8 @@ describe(`${config.label} API tests`, () => {
             
             const response = await api.createUser({
                 users: [{
-                    first_name: "Test User 1000",
-                    email: "test@friggframework.org",
+                    first_name: 'Test User 1000',
+                    email: 'test@friggframework.org',
                     role: role.id,
                     profile: profile.id,
                 }]

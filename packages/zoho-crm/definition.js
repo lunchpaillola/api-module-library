@@ -1,6 +1,6 @@
 require('dotenv').config();
 const {Api} = require('./api');
-const {get} = require("@friggframework/core");
+const {get} = require('@friggframework/core');
 const config = require('./defaultConfig.json')
 
 const Definition = {
@@ -19,7 +19,7 @@ const Definition = {
             entity: [],
         },
         getCredentialDetails: async function (api, userId) {
-            const response = await api.listUsers({type: "CurrentUser"});
+            const response = await api.listUsers({type: 'CurrentUser'});
             const currentUser = response.users[0];
             return {
                 identifiers: {externalId: currentUser.id, user: userId},
@@ -27,7 +27,7 @@ const Definition = {
             };
         },
         getEntityDetails: async function (api, callbackParams, tokenResponse, userId) {
-            const response = await api.listUsers({type: "CurrentUser"});
+            const response = await api.listUsers({type: 'CurrentUser'});
             const currentUser = response.users[0];
             return {
                 identifiers: {externalId: currentUser.id, user: userId},
