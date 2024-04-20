@@ -16,14 +16,15 @@ class Api extends OAuth2Requester {
 
         this.URLs = {
             // Users
-            user: (userId) => `/users/${userId}`,
             users: '/users',
-
-            // Organization
-            organization: '/org',
+            user: (userId) => `/users/${userId}`,
 
             // Roles
             roles: '/settings/roles',
+            role: (roleId) => `/settings/roles/${roleId}`,
+
+            // Profiles
+            profiles: '/settings/profiles',
         };
     }
 
@@ -60,14 +61,14 @@ class Api extends OAuth2Requester {
         }
     }
 
+    async _get(options, stringify) {
+        this.addJsonHeaders(options);
+        return super._get(options, stringify);
+    }
+
     async _post(options, stringify) {
         this.addJsonHeaders(options);
         return super._post(options, stringify);
-    }
-
-    async _patch(options, stringify) {
-        this.addJsonHeaders(options);
-        return super._patch(options, stringify);
     }
 
     async _put(options, stringify) {
@@ -75,39 +76,87 @@ class Api extends OAuth2Requester {
         return super._put(options, stringify);
     }
 
+    async _delete(options) {
+        this.addJsonHeaders(options);
+        const response = await super._delete(options);
+        return await this.parsedBody(response);
+    }
+
     // **************************   Users   **********************************
     
     async listUsers(queryParams = {}) {
-        const options = {
+        return this._get({
             url: this.baseUrl + this.URLs.users,
             query: {...queryParams},
-        };
-        return this._get(options);
+        });
     }
 
     async getUser(userId) {
-        const options = {
+        return this._get({
             url: this.baseUrl + this.URLs.user(userId),
-        };
-        return this._get(options);
+        });
     }
 
-    // **************************   Organizations   **********************************
+    async createUser(body = {}) {
+        return this._post({
+            url: this.baseUrl + this.URLs.users,
+            body: body
+        });
+    }
 
-    async getOrganization() {
-        return this._get({url: this.baseUrl + this.URLs.organization});
+    async updateUser(userId, body = {}) {
+        return this._put({
+            url: this.baseUrl + this.URLs.user(userId),
+            body: body,
+        });
+    }
+
+    async deleteUser(userId) {
+        return this._delete({
+            url: this.baseUrl + this.URLs.user(userId),
+        });
     }
 
     // **************************   Roles   **********************************
     
     async listRoles() {
-        return this._get({url: this.baseUrl + this.URLs.roles});
+        return this._get({
+            url: this.baseUrl + this.URLs.roles
+        });
+    }
+
+    async getRole(roleId) {
+        return this._get({
+            url: this.baseUrl + this.URLs.role(roleId)
+        });
     }
 
     async createRole(body = {}) {
         return this._post({
             url: this.baseUrl + this.URLs.roles,
             body: body
+        });
+    }
+
+    async updateRole(roleId, body = {}) {
+        return this._put({
+            url: this.baseUrl + this.URLs.role(roleId),
+            body: body,
+        });
+    }
+
+    async deleteRole(roleId, queryParams = {}) {
+        return this._delete({
+            url: this.baseUrl + this.URLs.role(roleId),
+            query: {...queryParams},
+        });
+    }
+
+    // **************************   Profiles   **********************************
+
+    async listProfiles() {
+        return this._get({
+            url: this.baseUrl + this.URLs.profiles
         });
     }
 }
