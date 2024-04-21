@@ -1,6 +1,24 @@
 const {Authenticator} = require('@friggframework/test');
 const {Api} = require('../api');
 const config = require('../defaultConfig.json');
+const {promises: fs} = require("fs");
+
+const mockDir = `./mocks${Date.now()}`
+const parsedBody = async function async(resp) {
+    const contentType = resp.headers.get('Content-Type') || '';
+    let body;
+    if (
+        contentType.match(/^application\/json/) ||
+        contentType.match(/^application\/vnd.api\+json/) ||
+        contentType.match(/^application\/hal\+json/)
+    ) {
+        body = await resp.json();
+    } else {
+        body = await resp.text();
+    }
+    await fs.writeFile(`./${mockDir}/${this.lastCalled}.json`, JSON.stringify(body));
+    return body;
+}
 
 describe(`${config.label} API tests`, () => {
 
@@ -11,7 +29,23 @@ describe(`${config.label} API tests`, () => {
         redirect_uri: `${process.env.REDIRECT_URI}/hubspot`,
         scope: process.env.HUBSPOT_SCOPE
     };
+    Object.getOwnPropertyNames(Api.prototype).forEach(f => {
+        if (f !== 'constructor' &&
+            typeof Api.prototype[f] === 'function' &&
+            f !== 'addJsonHeaders' &&
+            !f.startsWith('_')) {
+            const old = Api.prototype[f];
+            Api.prototype[f] = function (...args) {
+                this.lastCalled = f;
+                return old.apply(this, args);
+            }
+        }
+    })
     const api = new Api(apiParams);
+    api.parsedBody = parsedBody;
+    beforeAll(async () => {
+        await fs.mkdir(mockDir, {recursive: true});
+    });
 
     beforeAll(async () => {
         const url = await api.getAuthUri();
@@ -463,6 +497,55 @@ describe(`${config.label} API tests`, () => {
         });
     });
 
+    describe('Custom Object Schemas', () => {
+        const testSchema = {
+            "labels": {"singular": "Test Object", "plural": "Test Objects"},
+            "requiredProperties": ["word"],
+            "searchableProperties": ["word"],
+            "primaryDisplayProperty": "word",
+            "secondaryDisplayProperties": [],
+            "description": null,
+            "properties": [{
+                "name": "word",
+                "label": "Word",
+                "type": "string",
+                "fieldType": "text",
+                "description": "",
+                "hasUniqueValue": false
+            }],
+            "associatedObjects": [
+                "COMPANY"
+            ],
+            "name": "test_object"
+        }
+
+        it('should return the Custom Object Schemas', async () => {
+            const response = await api.listCustomObjectSchemas();
+            expect(response).toBeDefined();
+            expect(response).toHaveProperty('results');
+            expect(response.results.length).toBeGreaterThan(0);
+            expect(response.results.filter(s => s.name === testSchema.name).length).toBe(0);
+        });
+
+        it('should create a Custom Object Schema', async () => {
+            const response = await api.createCustomObjectSchema(testSchema);
+            expect(response).toBeDefined();
+            expect(response).toHaveProperty('id');
+        });
+
+        it('Should get association labels', async () => {
+            const labels = await api.getAssociationLabels('COMPANY', testSchema.name);
+            expect(labels).toBeDefined();
+            expect(labels.results).toHaveProperty('length');
+            expect(labels.results.find(label => label.label === 'Primary')).toBeTruthy();
+        })
+
+        it('should delete a Custom Object Schema', async () => {
+            const response = await api.deleteCustomObjectSchema(testSchema.name);
+            expect(response.status).toBe(204);
+        })
+    })
+
     describe('HS Custom Objects', () => {
         let allCustomObjects;
         const testObjType = 'tests';
@@ -626,17 +709,40 @@ describe(`${config.label} API tests`, () => {
         })
     })
 
-    describe('HS List Search', () => {
+    describe('HS List Requests', () => {
         it('Should get a list of lists', async () => {
             const response = await api.searchLists();
             expect(response).toBeDefined();
             expect(response.lists).toHaveProperty('length');
+        });
+        let createdListId;
+        it('Should create a list', async () => {
+            const {list} = await api.createList('Test List', '0-2');
+            createdListId = list.listId;
+        });
+        it('Should get a list', async () => {
+            const response = await api.getListById(createdListId);
+            expect(response).toBeDefined();
+            expect(response.list.listId).toBe(createdListId);
+        })
+        it('Should add a record to list', async () => {
+            const companyResponse = await api.listCompanies();
+            const someCompanyId = companyResponse.results[0].id;
+            const response = await api.addToList(createdListId, [someCompanyId]);
+            expect(response).toBeDefined();
+            // HS has a typo in the response "recordsIds" instead of "recordIds"
+            expect(response.recordsIdsAdded).toHaveLength(1);
+        })
+        it('Should delete a list', async () => {
+            const response = await api.deleteList(createdListId);
+            expect(response).toBeDefined();
+            expect(response.status).toBe(204);
         })
     });
 
     describe('Association Labels', () => {
         it('Should get association labels', async () => {
-            const labels = await api.getAssociationLabels('CONTACT', 'COMPANY');
+            const labels = await api.getAssociationLabels('COMPANY', 'CONTACT');
             expect(labels).toBeDefined();
             expect(labels.results).toHaveProperty('length');
             expect(labels.results.find(label => label.label === 'Primary')).toBeTruthy();

@@ -57,7 +57,9 @@ class Api extends OAuth2Requester {
             emailTemplates: '/content/api/v2/templates',
             emailTemplateById: (templateId) => `/content/api/v2/templates/${templateId}`,
             lists: '/crm/v3/lists',
+            listById: (listId) => `/crm/v3/lists/${listId}`,
             listSearch: '/crm/v3/lists/search',
+            listMembership: (listId) => `/crm/v3/lists/${listId}/memberships/add-and-remove`,
             associations: (fromObject, toObject) => `/crm/v4/associations/${fromObject}/${toObject}`,
             associationLabels: (fromObject, toObject) => `/crm/v4/associations/${fromObject}/${toObject}/labels`,
 
@@ -934,6 +936,43 @@ class Api extends OAuth2Requester {
             },
         };
         return this._post(options);
+    }
+
+    async getListById(listId) {
+        const options = {
+            url: this.baseUrl + this.URLs.listById(listId),
+        };
+        return this._get(options);
+    }
+
+    async createList(name, objectTypeId, processingType = 'MANUAL', listFolderId = null) {
+        const options = {
+            url: this.baseUrl + this.URLs.lists,
+            body: {
+                name,
+                objectTypeId,
+                processingType,
+                listFolderId
+            },
+        };
+        return this._post(options);
+    }
+
+    async deleteList(listId) {
+        const options = {
+            url: this.baseUrl + this.URLs.listById(listId),
+        };
+        return this._delete(options);
+    }
+
+    async addToList(listId, recordIds)  {
+        const options = {
+            url: this.baseUrl + this.URLs.listMembership(listId),
+            body: {
+                "recordIdsToAdd": recordIds
+            },
+        };
+        return this._put(options);
     }
 }
 
