@@ -36,7 +36,7 @@ class Api extends OAuth2Requester {
 
             // Workspaces
             workspaces: '/workspaces',
-            workspacesById: (workspaceId) => `/workspaces/${workspaceId}`,
+            workspaceById: (workspaceId) => `/workspaces/${workspaceId}`,
         };
 
         this.authorizationUri = encodeURI(
@@ -289,14 +289,14 @@ class Api extends OAuth2Requester {
 
     async getWorkspaceById(id) {
         const options = {
-            url: this.baseUrl + this.URLs.workspacesById(id),
+            url: this.baseUrl + this.URLs.workspaceById(id),
         };
         return this._get(options);
     }
 
     async updateWorkspace(id, body) {
         const options = {
-            url: this.baseUrl + this.URLs.workspacesById(id),
+            url: this.baseUrl + this.URLs.workspaceById(id),
             body: {
                 data: body,
             },
