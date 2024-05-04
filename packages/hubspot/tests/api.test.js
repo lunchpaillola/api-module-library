@@ -863,7 +863,7 @@ describe(`${config.label} API tests`, () => {
                     to: {id: toCompany}
                 }
             });
-            const response = await api.deleteBatchAssociations(
+            const response = await api.deleteBatchAssociationLabels(
                 testObjType,
                 'COMPANY',
                 inputs

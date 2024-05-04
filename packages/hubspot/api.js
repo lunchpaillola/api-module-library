@@ -33,6 +33,8 @@ class Api extends OAuth2Requester {
             createBatchAssociationsDefault: (fromObjectType, toObjectType) =>
                 `/crm/v4/associations/${fromObjectType}/${toObjectType}/batch/associate/default`,
             deleteBatchAssociations: (fromObjectType, toObjectType) =>
+                `/crm/v4/associations/${fromObjectType}/${toObjectType}/batch/archive`,
+            deleteBatchAssociationLabels: (fromObjectType, toObjectType) =>
                 `/crm/v4/associations/${fromObjectType}/${toObjectType}/batch/labels/archive`,
             v1DealInfo: (dealId) => `/deals/v1/deal/${dealId}`,
             getPipelineDetails: (objType) => `/crm/v3/pipelines/${objType}`,
@@ -944,6 +946,18 @@ class Api extends OAuth2Requester {
             url:
                 this.baseUrl +
                 this.URLs.deleteBatchAssociations(fromObjectType, toObjectType),
+            body: {inputs},
+            returnFullRes: true,
+        };
+
+        return this._post(options);
+    }
+
+    async deleteBatchAssociationLabels(fromObjectType, toObjectType, inputs) {
+        const options = {
+            url:
+                this.baseUrl +
+                this.URLs.deleteBatchAssociationLabels(fromObjectType, toObjectType),
             body: {inputs},
             returnFullRes: true,
         };
