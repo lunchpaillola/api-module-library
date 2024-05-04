@@ -26,14 +26,14 @@ class Api extends OAuth2Requester {
             deals: '/crm/v3/objects/deals',
             dealById: (dealId) => `/crm/v3/objects/deals/${dealId}`,
             searchDeals: '/crm/v3/objects/deals/search',
-            readBatchAssociations: (fromObject, toObject) =>
-                `/crm/v4/associations/${fromObject}/${toObject}/batch/read`,
-            createBatchAssociations: (fromObject, toObject) =>
-                `/crm/v4/associations/${fromObject}/${toObject}/batch/create`,
-            createBatchAssociationsDefault: (fromObject, toObject) =>
-                `/crm/v4/associations/${fromObject}/${toObject}/batch/associate/default`,
-            deleteBatchAssociations: (fromObject, toObject) =>
-                `/crm/v4/associations/${fromObject}/${toObject}/batch/labels/archive`,
+            readBatchAssociations: (fromObjectType, toObjectType) =>
+                `/crm/v4/associations/${fromObjectType}/${toObjectType}/batch/read`,
+            createBatchAssociations: (fromObjectType, toObjectType) =>
+                `/crm/v4/associations/${fromObjectType}/${toObjectType}/batch/create`,
+            createBatchAssociationsDefault: (fromObjectType, toObjectType) =>
+                `/crm/v4/associations/${fromObjectType}/${toObjectType}/batch/associate/default`,
+            deleteBatchAssociations: (fromObjectType, toObjectType) =>
+                `/crm/v4/associations/${fromObjectType}/${toObjectType}/batch/labels/archive`,
             v1DealInfo: (dealId) => `/deals/v1/deal/${dealId}`,
             getPipelineDetails: (objType) => `/crm/v3/pipelines/${objType}`,
             getOwnerById: (ownerId) => `/owners/v2/owners/${ownerId}`,
@@ -896,13 +896,13 @@ class Api extends OAuth2Requester {
         return this._get(options);
     }
 
-    async getBatchAssociations(fromObject, toObject, inputs) {
+    async getBatchAssociations(fromObjectType, toObjectType, inputs) {
         const postBody = {inputs};
 
         const options = {
             url:
                 this.baseUrl +
-                this.URLs.readBatchAssociations(fromObject, toObject),
+                this.URLs.readBatchAssociations(fromObjectType, toObjectType),
             body: postBody,
         };
 
@@ -911,13 +911,13 @@ class Api extends OAuth2Requester {
         return results;
     }
 
-    async createBatchAssociations(fromObject, toObject, inputs) {
+    async createBatchAssociations(fromObjectType, toObjectType, inputs) {
         const postBody = {inputs};
 
         const options = {
             url:
                 this.baseUrl +
-                this.URLs.createBatchAssociations(fromObject, toObject),
+                this.URLs.createBatchAssociations(fromObjectType, toObjectType),
             body: postBody,
         };
 
@@ -926,11 +926,11 @@ class Api extends OAuth2Requester {
         return results;
     }
 
-    async createBatchAssociationsDefault(fromObject, toObject, inputs) {
+    async createBatchAssociationsDefault(fromObjectType, toObjectType, inputs) {
         const options = {
             url:
                 this.baseUrl +
-                this.URLs.createBatchAssociationsDefault(fromObject, toObject),
+                this.URLs.createBatchAssociationsDefault(fromObjectType, toObjectType),
             body: {inputs},
         };
 
@@ -939,11 +939,11 @@ class Api extends OAuth2Requester {
         return results;
     }
 
-    async deleteBatchAssociations(fromObject, toObject, inputs) {
+    async deleteBatchAssociations(fromObjectType, toObjectType, inputs) {
         const options = {
             url:
                 this.baseUrl +
-                this.URLs.deleteBatchAssociations(fromObject, toObject),
+                this.URLs.deleteBatchAssociations(fromObjectType, toObjectType),
             body: {inputs},
             returnFullRes: true,
         };
