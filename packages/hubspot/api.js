@@ -662,7 +662,7 @@ class Api extends OAuth2Requester {
     async updateProperty(objType, propName, body) {
         const options = {
             url: this.baseUrl + this.URLs.propertiesByName(objType, propName),
-            body,
+            body: {body},
         };
         return this._patch(options);
     }

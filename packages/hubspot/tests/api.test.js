@@ -739,7 +739,7 @@ describe(`${config.label} API tests`, () => {
         })
     });
 
-    describe.only('Association Labels', () => {
+    describe('Association Labels', () => {
         it('Should get association labels', async () => {
             const labels = await api.getAssociationLabels('COMPANY', 'CONTACT');
             expect(labels).toBeDefined();
@@ -772,7 +772,7 @@ describe(`${config.label} API tests`, () => {
         it('Should create batch default associations', async () => {
             const inputs = createdBatch.map(o => {
                 return {
-                    from:{id:  o.id},
+                    from: {id: o.id},
                     to: {id: toCompany}
                 }
             });
@@ -783,7 +783,7 @@ describe(`${config.label} API tests`, () => {
             );
             expect(response).toBeDefined();
             expect(response).toHaveProperty('length');
-            expect(response.length).toBe(createdBatch.length*2);
+            expect(response.length).toBe(createdBatch.length * 2);
         })
 
         let createdLabel;
@@ -802,7 +802,7 @@ describe(`${config.label} API tests`, () => {
         })
 
         it('Should get association labels', async () => {
-            const labels = await api.getAssociationLabels(testObjType,'COMPANY');
+            const labels = await api.getAssociationLabels(testObjType, 'COMPANY');
             expect(labels).toBeDefined();
             expect(labels.results).toHaveProperty('length');
             expect(labels.results.find(label => label.label && label.label === 'Foo')).toBeTruthy();
@@ -817,7 +817,7 @@ describe(`${config.label} API tests`, () => {
                         associationCategory: createdLabel.category,
                         associationTypeId: createdLabel.typeId
                     }],
-                    from:{id:  o.id},
+                    from: {id: o.id},
                     to: {id: toCompany}
                 }
             });
@@ -855,7 +855,7 @@ describe(`${config.label} API tests`, () => {
                         associationCategory: createdLabel.category,
                         associationTypeId: createdLabel.typeId
                     }],
-                    from:{id:  o.id},
+                    from: {id: o.id},
                     to: {id: toCompany}
                 }
             });
@@ -887,6 +887,63 @@ describe(`${config.label} API tests`, () => {
             expect(response).toBeDefined();
             expect(response).toBe("");
         });
+    });
+
+    describe.only('Properties requests', () => {
+        let groupeName;
+        it('Should retrieve a property', async () => {
+            const response = await api.getPropertyByName('tests', 'word');
+            expect(response).toBeDefined();
+            expect(response).toHaveProperty('label');
+            expect(response.label).toBe('Word');
+            groupeName = response.groupName;
+        });
+
+        it('Should create a property', async () => {
+            const response = await api.createProperty('tests', {
+                "name": "test_field",
+                "label": "Test Field",
+                "type": "enumeration",
+                "fieldType": "select",
+                "groupName": groupeName,
+                "description": "A test of enumerated fields",
+                "options": [
+                    {
+                        "label": "Item One",
+                        "value": "item_one"
+                    },
+                    {
+                        "label": "Item Two",
+                        "value": "item_two"
+                    }
+                ]
+            });
+            expect(response).toBeDefined();
+            expect(response).toHaveProperty('label');
+            expect(response.name).toBe('test_field');
+        });
+
+        it('Should update a property', async () => {
+            const existing = await api.getPropertyByName('tests', 'test_field');
+            existing.options.push(
+                {
+                    "label": "Item Three",
+                    "value": "item_three",
+                    displayOrder: 2,
+                    hidden: false
+                }
+            )
+            const response = await api.updateProperty('tests', 'test_field', existing);
+            expect(response).toBeDefined();
+            expect(response).toHaveProperty('options');
+            expect(response.options.some(o => o.label === 'Item Three')).toBeTruthy();
+        });
+
+        it('Should delete a property', async () => {
+            const response = await api.deleteProperty('tests', 'test_field');
+            expect(response).toBeDefined();
+            expect(response.status).toBe(204);
+        })
 
     })
 });
