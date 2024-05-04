@@ -26,8 +26,14 @@ class Api extends OAuth2Requester {
             deals: '/crm/v3/objects/deals',
             dealById: (dealId) => `/crm/v3/objects/deals/${dealId}`,
             searchDeals: '/crm/v3/objects/deals/search',
-            getBatchAssociations: (fromObject, toObject) =>
-                `/crm/v3/associations/${fromObject}/${toObject}/batch/read`,
+            readBatchAssociations: (fromObject, toObject) =>
+                `/crm/v4/associations/${fromObject}/${toObject}/batch/read`,
+            createBatchAssociations: (fromObject, toObject) =>
+                `/crm/v4/associations/${fromObject}/${toObject}/batch/create`,
+            createBatchAssociationsDefault: (fromObject, toObject) =>
+                `/crm/v4/associations/${fromObject}/${toObject}/batch/associate/default`,
+            deleteBatchAssociations: (fromObject, toObject) =>
+                `/crm/v4/associations/${fromObject}/${toObject}/batch/labels/archive`,
             v1DealInfo: (dealId) => `/deals/v1/deal/${dealId}`,
             getPipelineDetails: (objType) => `/crm/v3/pipelines/${objType}`,
             getOwnerById: (ownerId) => `/owners/v2/owners/${ownerId}`,
@@ -889,23 +895,59 @@ class Api extends OAuth2Requester {
         return this._get(options);
     }
 
-    async batchGetAssociations(params) {
-        const fromObject = get(params, 'fromObject');
-        const toObject = get(params, 'toObject');
-        const inputs = get(params, 'inputs');
-
+    async getBatchAssociations(fromObject, toObject, inputs) {
         const postBody = {inputs};
 
         const options = {
             url:
                 this.baseUrl +
-                this.URLs.getBatchAssociations(fromObject, toObject),
+                this.URLs.readBatchAssociations(fromObject, toObject),
             body: postBody,
         };
 
         const res = await this._post(options);
         const {results} = res;
         return results;
+    }
+
+    async createBatchAssociations(fromObject, toObject, inputs) {
+        const postBody = {inputs};
+
+        const options = {
+            url:
+                this.baseUrl +
+                this.URLs.createBatchAssociations(fromObject, toObject),
+            body: postBody,
+        };
+
+        const res = await this._post(options);
+        const {results} = res;
+        return results;
+    }
+
+    async createBatchAssociationsDefault(fromObject, toObject, inputs) {
+        const options = {
+            url:
+                this.baseUrl +
+                this.URLs.createBatchAssociationsDefault(fromObject, toObject),
+            body: {inputs},
+        };
+
+        const res = await this._post(options);
+        const {results} = res;
+        return results;
+    }
+
+    async deleteBatchAssociations(fromObject, toObject, inputs) {
+        const options = {
+            url:
+                this.baseUrl +
+                this.URLs.deleteBatchAssociations(fromObject, toObject),
+            body: {inputs},
+            returnFullRes: true,
+        };
+
+        return this._post(options);
     }
 
     async _propertiesList(objType) {
@@ -923,6 +965,21 @@ class Api extends OAuth2Requester {
             url: this.baseUrl + this.URLs.associationLabels(fromObjType, toObjType),
         };
         return this._get(options);
+    }
+
+    async createAssociationLabel(fromObjType, toObjType, label) {
+        const options = {
+            url: this.baseUrl + this.URLs.associationLabels(fromObjType, toObjType),
+            body: label
+        };
+        return this._post(options);
+    }
+
+    async deleteAssociationLabel(fromObjType, toObjType, associationTypeId) {
+        const options = {
+            url: this.baseUrl + this.URLs.associationLabels(fromObjType, toObjType) + `/${associationTypeId}`,
+        };
+        return this._delete(options, false);
     }
 
     async searchLists(query = "", offset = 0, count = 500, additionalProperties = []) {
