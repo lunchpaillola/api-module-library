@@ -929,8 +929,6 @@ describe(`${config.label} API tests`, () => {
                 {
                     "label": "Item Three",
                     "value": "item_three",
-                    displayOrder: 2,
-                    hidden: false
                 }
             )
             const response = await api.updateProperty('tests', 'test_field', existing);
