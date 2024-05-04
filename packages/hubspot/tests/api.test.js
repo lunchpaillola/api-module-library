@@ -708,7 +708,7 @@ describe(`${config.label} API tests`, () => {
         })
     })
 
-    describe('HS List Requests', () => {
+    describe.only('HS List Requests', () => {
         it('Should get a list of lists', async () => {
             const response = await api.searchLists();
             expect(response).toBeDefined();
@@ -731,6 +731,10 @@ describe(`${config.label} API tests`, () => {
             expect(response).toBeDefined();
             // HS has a typo in the response "recordsIds" instead of "recordIds"
             expect(response.recordsIdsAdded).toHaveLength(1);
+        })
+        it('Should remove all records from list', async () => {
+            const response = await api.removeAllListMembers(createdListId);
+            expect(response.status).toBe(204);
         })
         it('Should delete a list', async () => {
             const response = await api.deleteList(createdListId);

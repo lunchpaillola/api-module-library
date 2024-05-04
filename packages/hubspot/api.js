@@ -65,7 +65,8 @@ class Api extends OAuth2Requester {
             lists: '/crm/v3/lists',
             listById: (listId) => `/crm/v3/lists/${listId}`,
             listSearch: '/crm/v3/lists/search',
-            listMembership: (listId) => `/crm/v3/lists/${listId}/memberships/add-and-remove`,
+            listMemberships: (listId) => `/crm/v3/lists/${listId}/memberships`,
+            listMembershipsAddRemove: (listId) => `/crm/v3/lists/${listId}/memberships/add-and-remove`,
             associations: (fromObject, toObject) => `/crm/v4/associations/${fromObject}/${toObject}`,
             associationLabels: (fromObject, toObject) => `/crm/v4/associations/${fromObject}/${toObject}/labels`,
 
@@ -1022,15 +1023,33 @@ class Api extends OAuth2Requester {
         return this._delete(options);
     }
 
-    async addToList(listId, recordIds)  {
+    async removeAllListMembers(listId) {
         const options = {
-            url: this.baseUrl + this.URLs.listMembership(listId),
+            url: this.baseUrl + this.URLs.listMemberships(listId),
+        };
+        return this._delete(options);
+    }
+
+    async addAndRemoveFromList(listId, idsToAdd, idsToRemove)  {
+        const options = {
+            url: this.baseUrl + this.URLs.listMembershipsAddRemove(listId),
             body: {
-                "recordIdsToAdd": recordIds
+                "recordIdsToAdd": idsToAdd,
+                "recordIdsToRemove": idsToRemove
             },
         };
         return this._put(options);
     }
+
+    async addToList(listId, recordIds)  {
+        return this.addAndRemoveFromList(listId, recordIds, []);
+    }
+
+    async removeFromList(listId, recordIds)  {
+        return this.addAndRemoveFromList(listId, [], recordIds);
+    }
+
+
 }
 
 module.exports = {Api};
