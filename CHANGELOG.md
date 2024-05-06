@@ -1,3 +1,16 @@
+# (Mon May 06 2024)
+
+#### 🐛 Bug Fix
+
+- `@friggframework/api-module-42matters@1.1.3`
+  - 42matters api method updates [#6](https://github.com/friggframework/api-module-library/pull/6) ([@MichaelRyanWebber](https://github.com/MichaelRyanWebber))
+
+#### Authors: 1
+
+- [@MichaelRyanWebber](https://github.com/MichaelRyanWebber)
+
+---
+
 # (Wed Apr 17 2024)
 
 #### 🐛 Bug Fix
