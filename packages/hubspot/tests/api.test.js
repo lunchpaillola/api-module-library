@@ -708,7 +708,7 @@ describe(`${config.label} API tests`, () => {
         })
     })
 
-    describe.only('HS List Requests', () => {
+    describe('HS List Requests', () => {
         it('Should get a list of lists', async () => {
             const response = await api.searchLists();
             expect(response).toBeDefined();
@@ -893,7 +893,7 @@ describe(`${config.label} API tests`, () => {
         });
     });
 
-    describe.only('Properties requests', () => {
+    describe('Properties requests', () => {
         let groupeName;
         it('Should retrieve a property', async () => {
             const response = await api.getPropertyByName('tests', 'word');
