@@ -1,3 +1,20 @@
+# (Thu May 09 2024)
+
+:tada: This release contains work from a new contributor! :tada:
+
+Thank you, null[@aaj-lh](https://github.com/aaj-lh), for all your work!
+
+#### 🐛 Bug Fix
+
+- `@friggframework/api-module-connectwise@1.0.3`
+  - ConnectWise cleanup [#7](https://github.com/friggframework/api-module-library/pull/7) ([@aaj-lh](https://github.com/aaj-lh))
+
+#### Authors: 1
+
+- [@aaj-lh](https://github.com/aaj-lh)
+
+---
+
 # (Mon May 06 2024)
 
 #### 🐛 Bug Fix
