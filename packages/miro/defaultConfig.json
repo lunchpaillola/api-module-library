@@ -1,14 +1,12 @@
 {
-  "name": "hubspot",
-  "label": "HubSpot",
-  "productUrl": "https://hubspot.com",
-  "apiDocs": "https://developers.hubspot.com",
-  "logoUrl": "https://friggframework.org/assets/img/hubspot.jpeg",
-  "categories": [
-    "Marketing",
-    "Sales",
-    "CMS",
-    "Marketing Automation"
-  ],
-  "description": "HubSpot is an all-in-one Marketing and Sales solution for scaling companies"
+    "name": "miro",
+    "label": "Miro",
+    "productUrl": "https://miro.com",
+    "apiDocs": "https://developers.miro.com/",
+    "logoUrl": "",
+    "categories": [
+        "Project Management & Team Communication",
+        "Business Process & Workflow Tools"
+    ],
+    "description": "Miro is an online collaborative whiteboard platform that enables distributed teams to work effectively together."
 }
