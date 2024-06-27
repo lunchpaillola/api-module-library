@@ -1,8 +1,8 @@
 {
-  "name": "@friggframework/api-module-hubspot",
-  "version": "1.1.5",
+  "name": "@friggframework/api-module-miro",
+  "version": "1.0.0",
   "prettier": "@friggframework/prettier-config",
-  "description": "HubSpot API module that lets the Frigg Framework interact with HubSpot",
+  "description": "Miro API module that lets the Frigg Framework interact with Miro",
   "main": "index.js",
   "scripts": {
     "lint:fix": "prettier --write --loglevel error . && eslint . --fix",
