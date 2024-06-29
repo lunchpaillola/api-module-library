@@ -40,7 +40,8 @@ class Api extends OAuth2Requester {
             redirectUrl: this.redirect_uri,
         });
 
-        this.authorizationUri = this.miro.getAuthUrl();
+        //this.authorizationUri = this.miro.getAuthUrl();
+        this.authorizationUri = `https://miro.com/oauth/authorize?response_type=code&client_id=${this.client_id}&redirect_uri=${this.redirect_uri}`;
     }
 
     getAuthUri() {
@@ -118,27 +119,6 @@ class Api extends OAuth2Requester {
 
     // **************************   Board Members   **********************************
 
-    async getTokenFromCode(code) {
-        if (!code || typeof code !== 'string') {
-            throw new Error('Invalid code for getTokenFromCode');
-        }
-
-        try {
-            const token = await this.miro.exchangeCodeForAccessToken(
-                '<user_id>',
-                code
-            );
-            if (token) {
-                await this.setTokens({ access_token: token });
-                return { access_token: token };
-            } else {
-                throw new Error('Access token not found in response');
-            }
-        } catch (err) {
-            throw new Error('Failed to get token');
-        }
-    }
-
     async getAllBoardMembers(boardId) {
         if (!boardId || typeof boardId !== 'string') {
             throw new Error('Invalid boardId for getAllBoardMembers');
@@ -152,6 +132,26 @@ class Api extends OAuth2Requester {
     }
 
     // **************************   Other/All   **********************************
+
+    async getTokenFromCode(code) {
+        if (!code || typeof code !== 'string') {
+            throw new Error('Invalid code for getTokenFromCode');
+        }
+
+        try {
+            const options = {
+                url: `${this.tokenUri}?grant_type=authorization_code&client_id=${this.client_id}&client_secret=${this.client_secret}&code=${code}&redirect_uri=${this.redirect_uri}`,
+            };
+
+            const response = await this._post(options);
+            await this.setTokens(response);
+
+            return response;
+        } catch (err) {
+            throw new Error('Failed to get token: ' + err.message);
+        }
+    }
+
     async getAccessTokenContext() {
         const options = {
             url: this.baseUrl + this.URLs.oauth_token,

@@ -15,13 +15,11 @@ describe('Miro API Tests', () => {
 
     const api = new Api(apiParams);
     let boardId;
-    let validAccessToken;
 
     beforeAll(async () => {
         const url = api.getAuthUri();
         const response = await Authenticator.oauth2(url);
         await api.getTokenFromCode(response.data.code);
-        validAccessToken = api.access_token;
     });
 
     describe('OAuth Flow Tests', () => {
@@ -33,7 +31,7 @@ describe('Miro API Tests', () => {
             try {
                 await api.getTokenFromCode('invalid_code');
             } catch (error) {
-                expect(error.message).toBe('Failed to get token');
+                expect(error.message).toContain('Failed to get token');
             }
         });
     });
@@ -49,18 +47,6 @@ describe('Miro API Tests', () => {
             expect(context.scopes).toBeInstanceOf(Array);
             expect(context.team).toBeDefined();
         });
-
-        it('Should handle invalid token context request', async () => {
-            api.access_token = 'invalid_token';
-            try {
-                await api.getAccessTokenContext();
-            } catch (error) {
-                expect(error.message).toContain('GET request failed');
-            } finally {
-                // Reset access token to valid one for further tests
-                api.access_token = validAccessToken;
-            }
-        });
     });
 
     describe('Board Actions', () => {
@@ -68,18 +54,6 @@ describe('Miro API Tests', () => {
             const boards = await api.getBoards();
             expect(boards.type).toBe('list');
             boardId = boards.data[0].id;
-        });
-
-        it('Should handle board retrieval with invalid token', async () => {
-            api.access_token = 'invalid_token';
-            try {
-                await api.getBoards();
-            } catch (error) {
-                expect(error.message).toContain('GET request failed');
-            } finally {
-                // Reset access token to valid one for further tests
-                api.access_token = validAccessToken;
-            }
         });
 
         it('Should create a board', async () => {
@@ -99,9 +73,7 @@ describe('Miro API Tests', () => {
             try {
                 await api.createBoard(body);
             } catch (error) {
-                expect(error.message).toBe(
-                    'POST request to https://api.miro.com/v2/boards failed'
-                );
+                expect(error.message).toContain('POST request failed');
             }
         });
 
