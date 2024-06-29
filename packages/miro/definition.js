@@ -9,17 +9,22 @@ const Definition = {
         return config.name
     },
     moduleName: config.name,
-    modelName: 'HubSpot',
+    modelName: 'Miro',
     requiredAuthMethods: {
         getToken: async function (api, params) {
             const code = get(params.data, 'code');
-            return api.getTokenFromCode(code);
+            console.log('the paramas', params.data);
+            return api.getTokenForURL(code);
         },
         getEntityDetails: async function (api, callbackParams, tokenResponse, userId) {
-            const userDetails = await api.getUserDetails();
+            const userDetails = await api.getAccessTokenContext();
             return {
-                identifiers: {externalId: userDetails.portalId, user: userId},
-                details: {name: userDetails.hub_domain},
+                identifiers: { externalId: userDetails.user.id, user: userId  },
+                details: {
+                    userName: userDetails.user.name,
+                    organizationName: userDetails.organization.name,
+                    organizationId: userDetails.organization.id
+                }
             }
         },
         apiPropertiesToPersist: {
@@ -29,21 +34,21 @@ const Definition = {
             entity: [],
         },
         getCredentialDetails: async function (api, userId) {
-            const userDetails = await api.getUserDetails();
+            const userDetails = await api.getAccessTokenContext();
             return {
-                identifiers: {externalId: userDetails.portalId, user: userId},
+                identifiers: { externalId: userDetails.user.id, user: userId },
                 details: {}
             };
         },
         testAuthRequest: async function (api) {
-            return api.getUserDetails()
+            return api.getAccessTokenContext()
         },
     },
     env: {
-        client_id: process.env.HUBSPOT_CLIENT_ID,
-        client_secret: process.env.HUBSPOT_CLIENT_SECRET,
-        scope: process.env.HUBSPOT_SCOPE,
-        redirect_uri: `${process.env.REDIRECT_URI}/hubspot`,
+        client_id: process.env.MIRO_CLIENT_ID,
+        client_secret: process.env.MIRO_CLIENT_SECRET,
+        scope: process.env.MIRO_SCOPE,
+        redirect_uri: `${process.env.REDIRECT_URI}/miro`,
     }
 };
 
