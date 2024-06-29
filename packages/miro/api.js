@@ -6,6 +6,13 @@ class Api extends OAuth2Requester {
         super(params);
         // The majority of the properties for OAuth are default loaded by OAuth2Requester.
         // This includes the `client_id`, `client_secret`, `scopes`, and `redirect_uri`.
+
+         // Validate constructor parameters
+         if (!params.client_id || !params.client_secret || !params.redirect_uri) {
+            throw new Error('Missing required parameters: client_id, client_secret, redirect_uri');
+        }
+
+
         this.baseUrl = 'https://api.miro.com';
 
         this.URLs = {
@@ -53,18 +60,43 @@ this.authorizationUri = this.miro.getAuthUrl();
 
     async _post(options, stringify) {
         this.addJsonHeaders(options);
-        return super._post(options, stringify);
+        try {
+            return await super._post(options, stringify);
+        } catch (error) {
+            console.error('POST request failed:', error);
+            throw new Error('POST request failed');
+        }
     }
     
 
     async _patch(options, stringify) {
         this.addJsonHeaders(options);
-        return super._patch(options, stringify);
+        try {
+            return await super._patch(options, stringify);
+        } catch (error) {
+            console.error('PATCH request failed:', error);
+            throw new Error('PATCH request failed');
+        }
     }
 
     async _put(options, stringify) {
         this.addJsonHeaders(options);
-        return super._put(options, stringify);
+        try {
+            return await super._put(options, stringify);
+        } catch (error) {
+            console.error('PUT request failed:', error);
+            throw new Error('PUT request failed');
+        }
+    }
+
+    async _get(options) {
+        this.addJsonHeaders(options);
+        try {
+            return await super._get(options);
+        } catch (error) {
+            console.error('GET request failed:', error);
+            throw new Error('GET request failed');
+        }
     }
 
     // **************************   Boards   **********************************
@@ -88,27 +120,34 @@ this.authorizationUri = this.miro.getAuthUrl();
 
     // **************************   Board Members   **********************************
 
-        async getTokenFromCode(code) {
-        
-            try {
-                const token = await this.miro.exchangeCodeForAccessToken('<user_id>', code);    
-                if (token) {
-                    // Assuming the token is the access token
-                    await this.setTokens({ access_token: token });
-                    return { access_token: token };
-                } else {
-                    throw new Error('Access token not found in response');
-                }
-            } catch (err) {
-                console.error('Failed to get token:', err);
-                throw err;
-            }
+    async getTokenFromCode(code) {
+        if (!code || typeof code !== 'string') {
+            throw new Error('Invalid code for getTokenFromCode');
         }
+
+        try {
+            const token = await this.miro.exchangeCodeForAccessToken('<user_id>', code);    
+            if (token) {
+                await this.setTokens({ access_token: token });
+                return { access_token: token };
+            } else {
+                throw new Error('Access token not found in response');
+            }
+        } catch (err) {
+            console.error('Failed to get token:', err);
+            throw new Error('Failed to get token');
+        }
+    }
+
     
     
 
     
     async getAllBoardMembers(boardId) {
+        if (!boardId || typeof boardId !== 'string') {
+            throw new Error('Invalid boardId for getAllBoardMembers');
+        }
+
         const options = {
             url: this.baseUrl + this.URLs.membersByBoards(boardId),
         };
