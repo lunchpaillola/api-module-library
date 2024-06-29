@@ -37,7 +37,7 @@ describe('Miro Auther Tests', () => {
             authUrl = requirements.url;
         });
 
-        it.skip('should fail test auth', async () => {
+        it('should fail test auth', async () => {
             const response = await auther.testAuth();
             expect(response).toBeFalsy();
         });
