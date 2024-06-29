@@ -1,17 +1,22 @@
 const { OAuth2Requester, get } = require('@friggframework/core');
 const { Miro } = require('@mirohq/miro-api');
-
+/* eslint-disable camelcase */
 class Api extends OAuth2Requester {
     constructor(params) {
         super(params);
         // The majority of the properties for OAuth are default loaded by OAuth2Requester.
         // This includes the `client_id`, `client_secret`, `scopes`, and `redirect_uri`.
 
-         // Validate constructor parameters
-         if (!params.client_id || !params.client_secret || !params.redirect_uri) {
-            throw new Error('Missing required parameters: client_id, client_secret, redirect_uri');
+        // Validate constructor parameters
+        if (
+            !params.client_id ||
+            !params.client_secret ||
+            !params.redirect_uri
+        ) {
+            throw new Error(
+                'Missing required parameters: client_id, client_secret, redirect_uri'
+            );
         }
-
 
         this.baseUrl = 'https://api.miro.com';
 
@@ -24,20 +29,18 @@ class Api extends OAuth2Requester {
         };
 
         this.tokenUri = 'https://api.miro.com/v1/oauth/token';
-        
 
         this.access_token = get(params, 'access_token', null);
         this.refresh_token = get(params, 'refresh_token', null);
 
-// Initialize Miro SDK instance
-this.miro = new Miro({
-    clientId: this.client_id,
-    clientSecret: this.client_secret,
-    redirectUrl: this.redirect_uri,
-});
+        // Initialize Miro SDK instance
+        this.miro = new Miro({
+            clientId: this.client_id,
+            clientSecret: this.client_secret,
+            redirectUrl: this.redirect_uri,
+        });
 
-this.authorizationUri = this.miro.getAuthUrl();
-
+        this.authorizationUri = this.miro.getAuthUrl();
     }
 
     getAuthUri() {
@@ -63,18 +66,15 @@ this.authorizationUri = this.miro.getAuthUrl();
         try {
             return await super._post(options, stringify);
         } catch (error) {
-            console.error('POST request failed:', error);
             throw new Error('POST request failed');
         }
     }
-    
 
     async _patch(options, stringify) {
         this.addJsonHeaders(options);
         try {
             return await super._patch(options, stringify);
         } catch (error) {
-            console.error('PATCH request failed:', error);
             throw new Error('PATCH request failed');
         }
     }
@@ -84,7 +84,6 @@ this.authorizationUri = this.miro.getAuthUrl();
         try {
             return await super._put(options, stringify);
         } catch (error) {
-            console.error('PUT request failed:', error);
             throw new Error('PUT request failed');
         }
     }
@@ -94,7 +93,6 @@ this.authorizationUri = this.miro.getAuthUrl();
         try {
             return await super._get(options);
         } catch (error) {
-            console.error('GET request failed:', error);
             throw new Error('GET request failed');
         }
     }
@@ -126,7 +124,10 @@ this.authorizationUri = this.miro.getAuthUrl();
         }
 
         try {
-            const token = await this.miro.exchangeCodeForAccessToken('<user_id>', code);    
+            const token = await this.miro.exchangeCodeForAccessToken(
+                '<user_id>',
+                code
+            );
             if (token) {
                 await this.setTokens({ access_token: token });
                 return { access_token: token };
@@ -134,15 +135,10 @@ this.authorizationUri = this.miro.getAuthUrl();
                 throw new Error('Access token not found in response');
             }
         } catch (err) {
-            console.error('Failed to get token:', err);
             throw new Error('Failed to get token');
         }
     }
 
-    
-    
-
-    
     async getAllBoardMembers(boardId) {
         if (!boardId || typeof boardId !== 'string') {
             throw new Error('Invalid boardId for getAllBoardMembers');

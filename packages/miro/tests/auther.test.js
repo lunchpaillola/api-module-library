@@ -1,7 +1,12 @@
-const { connectToDatabase, disconnectFromDatabase, createObjectId, Auther } = require('@friggframework/core');
+const {
+    connectToDatabase,
+    disconnectFromDatabase,
+    createObjectId,
+    Auther,
+} = require('@friggframework/core');
 const { Definition } = require('../definition');
-const {Authenticator} = require("@friggframework/test");
-
+const { Authenticator } = require('@friggframework/test');
+/* eslint-disable camelcase */
 
 //Increase the global timeout for all tests
 jest.setTimeout(30000);
@@ -42,26 +47,24 @@ describe('Miro Auther Tests', () => {
         let firstRes;
         it('processAuthorizationCallback()', async () => {
             const response = await Authenticator.oauth2(authUrl);
-            const authorizationCode = encodeURIComponent(response.data.code.trim());
-
+            const authorizationCode = encodeURIComponent(
+                response.data.code.trim()
+            );
 
             try {
                 firstRes = await auther.processAuthorizationCallback({
                     data: {
-                        code: authorizationCode
+                        code: authorizationCode,
                     },
                 });
                 expect(firstRes).toBeDefined();
                 expect(firstRes.entity_id).toBeDefined();
                 expect(firstRes.credential_id).toBeDefined();
             } catch (error) {
-                console.error('Error during authorization callback:', error);
                 throw error;
             }
-        },30000); // Set a specific timeout for this test
-
+        }, 30000); // Set a specific timeout for this test
     });
-
 
     describe('Test credential retrieval and auther instantiation', () => {
         it('retrieve by entity id', async () => {

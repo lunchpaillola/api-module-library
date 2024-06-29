@@ -10,7 +10,8 @@
     "use:engine": "sudo n install $npm_package_engines_node && npm run use:npm",
     "use:npm": "npm install -g npm@$npm_package_engines_npm",
     "contributors:add": "all-contributors add",
-    "contributors:generate": "all-contributors generate"
+    "contributors:generate": "all-contributors generate",
+    "lint:fix": "prettier --write --loglevel error . && eslint . --fix"
   },
   "engines": {
     "node": ">=18",
@@ -59,6 +60,8 @@
   },
   "dependencies": {
     "@friggframework/core": "^1.1.2",
+    "@friggframework/eslint-config": "^1.1.6",
+    "@friggframework/prettier-config": "^1.1.6",
     "@friggframework/test-environment": "^1.1.6",
     "@mirohq/miro-api": "^2.1.0",
     "bot": "^0.0.3"

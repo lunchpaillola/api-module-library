@@ -1,7 +1,7 @@
 require('dotenv').config();
 const { Api } = require('../api');
-const { Authenticator } = require("@friggframework/test");
-
+const { Authenticator } = require('@friggframework/test');
+/* eslint-disable camelcase */
 // Increase the global timeout for all tests
 jest.setTimeout(30000);
 
@@ -84,8 +84,8 @@ describe('Miro API Tests', () => {
 
         it('Should create a board', async () => {
             const body = {
-                name: "Test Board",
-                description: "This is a test board",
+                name: 'Test Board',
+                description: 'This is a test board',
             };
             const response = await api.createBoard(body);
             expect(response.type).toBe('board');
@@ -94,12 +94,14 @@ describe('Miro API Tests', () => {
 
         it('Should handle board creation with invalid input', async () => {
             const body = {
-                invalidField: "Invalid data",
+                invalidField: 'Invalid data',
             };
             try {
                 await api.createBoard(body);
             } catch (error) {
-                expect(error.message).toBe('POST request to https://api.miro.com/v2/boards failed');
+                expect(error.message).toBe(
+                    'POST request to https://api.miro.com/v2/boards failed'
+                );
             }
         });
 
