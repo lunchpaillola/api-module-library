@@ -16,10 +16,6 @@ class Api extends OAuth2Requester {
             membersByBoards: (boardId) => `/v2/boards/${boardId}/members`,
         };
 
-        /*this.authorizationUri = encodeURI(
-            `https://miro.com/oauth/authorize?response_type=code&client_id=${this.client_id}&redirect_uri=${this.redirect_uri}`
-        );*/
-
         this.tokenUri = 'https://api.miro.com/v1/oauth/token';
         
 
@@ -38,7 +34,6 @@ this.authorizationUri = this.miro.getAuthUrl();
     }
 
     getAuthUri() {
-        console.log('theauthuri', this.authorizationUri)
         return this.authorizationUri;
     }
 
@@ -93,40 +88,10 @@ this.authorizationUri = this.miro.getAuthUrl();
 
     // **************************   Board Members   **********************************
 
-   /*async getTokenForURL(code) {
-        console.log('code',code);
-        const params = new URLSearchParams();
-        params.append('grant_type', 'authorization_code');
-        params.append('client_id', this.client_id);
-        params.append('client_secret',this.client_secret);
-        params.append('code',code);
-        params.append('redirect_uri', "this.redirec");
-        
-    
-        const url = `${this.tokenUri}?${params.toString()}`;
-        console.log('Token request URL:', url);
-        
-        const options = {
-            headers: {
-                'Accept': 'application/json',
-            },
-            url: url,
-        };
-        
-        const response = await this._post(options, false);
-        await this.setTokens(response);
-        return response;
-    }*/
-
-        async getTokenForURL(code) {
-            console.log('code', code);
+        async getTokenFromCode(code) {
         
             try {
-                const token = await this.miro.exchangeCodeForAccessToken('<user_id>', code);
-        
-                // Log the full token to ensure we have it
-                console.log('Full Token response:', token);
-        
+                const token = await this.miro.exchangeCodeForAccessToken('<user_id>', code);    
                 if (token) {
                     // Assuming the token is the access token
                     await this.setTokens({ access_token: token });

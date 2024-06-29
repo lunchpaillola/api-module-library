@@ -22,7 +22,7 @@ describe('Miro API Tests', () => {
     beforeAll(async () => {
         const url = api.getAuthUri();
         const response = await Authenticator.oauth2(url);
-        await api.getTokenForURL(response.data.code);
+        await api.getTokenFromCode(response.data.code);
     });
 
     describe('OAuth Flow Tests', () => {
@@ -34,7 +34,6 @@ describe('Miro API Tests', () => {
     describe('Basic Identification Requests', () => {
         it('Should retrieve access token context', async () => {
             const context = await api.getAccessTokenContext();
-            console.log('context', context);
             expect(context).toBeDefined();
             expect(context.type).toBe('oAuthToken');
             expect(context.createdBy).toBeDefined();

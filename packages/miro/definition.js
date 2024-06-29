@@ -14,7 +14,7 @@ const Definition = {
         getToken: async function (api, params) {
             const code = get(params.data, 'code');
             console.log('the paramas', params.data);
-            return api.getTokenForURL(code);
+            return api.getTokenFromCode(code);
         },
         getEntityDetails: async function (api, callbackParams, tokenResponse, userId) {
             const userDetails = await api.getAccessTokenContext();
