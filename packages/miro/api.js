@@ -1,5 +1,4 @@
 const { OAuth2Requester, get } = require('@friggframework/core');
-const { Miro } = require('@mirohq/miro-api');
 /* eslint-disable camelcase */
 class Api extends OAuth2Requester {
     constructor(params) {
@@ -32,13 +31,6 @@ class Api extends OAuth2Requester {
 
         this.access_token = get(params, 'access_token', null);
         this.refresh_token = get(params, 'refresh_token', null);
-
-        // Initialize Miro SDK instance
-        this.miro = new Miro({
-            clientId: this.client_id,
-            clientSecret: this.client_secret,
-            redirectUrl: this.redirect_uri,
-        });
 
         //this.authorizationUri = this.miro.getAuthUrl();
         this.authorizationUri = `https://miro.com/oauth/authorize?response_type=code&client_id=${this.client_id}&redirect_uri=${this.redirect_uri}`;
