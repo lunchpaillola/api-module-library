@@ -1,3 +1,20 @@
+# Table of Contents
+
+-   [Table of Contents](#table-of-contents)
+    -   [Setting Up the Local Instance of the Module](#setting-up-the-local-instance-of-the-module)
+        -   [Clone the GitHub Repository](#clone-the-github-repository)
+        -   [Switch to the `miro-module` Branch](#switch-to-the-miro-module-branch)
+        -   [Install Dependencies](#install-dependencies)
+        -   [Obtain Miro Client Credentials](#obtain-miro-client-credentials)
+        -   [Set Up Environment Variables](#set-up-environment-variables)
+        -   [Run Tests](#run-tests)
+        -   [Prepare to Use Your Module in Your Local Frigg Instance](#prepare-to-use-your-module-in-your-local-frigg-instance)
+    -   [Running Your Local Frigg Instance](#running-your-local-frigg-instance)
+        -   [Initialization](#initialization)
+        -   [Adding the Miro Integration](#adding-the-miro-integration)
+        -   [Example Methods from the Miro Integration](#example-methods-from-the-miro-integration)
+        -   [Running the Application](#running-the-application)
+
 ## Setting Up the Local Instance of the Module
 
 Follow these steps to set up your local instance of the `@friggframework/api-module-miro` module:
@@ -9,7 +26,7 @@ git clone https://github.com/lunchpaillola/api-module-library.git
 
 ```
 
-### Switch to the `miro` Branch
+### Switch to the `miro-module` Branch
 
 ```
 git checkout miro-module
@@ -106,7 +123,7 @@ cd ../../
 
     ```
 
-# Running Your Local Frigg Instance
+## Running Your Local Frigg Instance
 
 ### Initialization
 
