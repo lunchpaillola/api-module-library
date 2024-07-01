@@ -101,9 +101,10 @@ class Api extends OAuth2Requester {
         return this._post(options);
     }
 
-    async getBoards() {
+    async getBoards(query) {
         const options = {
             url: this.baseUrl + this.URLs.boards,
+            query,
         };
 
         return this._get(options);
@@ -111,13 +112,14 @@ class Api extends OAuth2Requester {
 
     // **************************   Board Members   **********************************
 
-    async getAllBoardMembers(boardId) {
+    async getAllBoardMembers(boardId, query) {
         if (!boardId || typeof boardId !== 'string') {
             throw new Error('Invalid boardId for getAllBoardMembers');
         }
 
         const options = {
             url: this.baseUrl + this.URLs.membersByBoards(boardId),
+            query,
         };
 
         return this._get(options);
