@@ -1,19 +1,19 @@
 # Table of Contents
 
--   [Table of Contents](#table-of-contents)
-    -   [Setting Up the Local Instance of the Module](#setting-up-the-local-instance-of-the-module)
-        -   [Clone the GitHub Repository](#clone-the-github-repository)
-        -   [Switch to the `miro-module` Branch](#switch-to-the-miro-module-branch)
-        -   [Install Dependencies](#install-dependencies)
-        -   [Obtain Miro Client Credentials](#obtain-miro-client-credentials)
-        -   [Set Up Environment Variables](#set-up-environment-variables)
-        -   [Run Tests](#run-tests)
-        -   [Prepare to Use Your Module in Your Local Frigg Instance](#prepare-to-use-your-module-in-your-local-frigg-instance)
-    -   [Running Your Local Frigg Instance](#running-your-local-frigg-instance)
-        -   [Initialization](#initialization)
-        -   [Adding the Miro Integration](#adding-the-miro-integration)
-        -   [Example Methods from the Miro Integration](#example-methods-from-the-miro-integration)
-        -   [Running the Application](#running-the-application)
+- [Table of Contents](#table-of-contents)
+  - [Setting Up the Local Instance of the Module](#setting-up-the-local-instance-of-the-module)
+    - [Clone the GitHub Repository](#clone-the-github-repository)
+    - [Switch to the `miro-module` Branch](#switch-to-the-miro-module-branch)
+    - [Install Dependencies](#install-dependencies)
+    - [Obtain Miro Client Credentials](#obtain-miro-client-credentials)
+    - [Set Up Environment Variables](#set-up-environment-variables)
+    - [Run Tests](#run-tests)
+    - [Prepare to Use Your Module in Your Local Frigg Instance](#prepare-to-use-your-module-in-your-local-frigg-instance)
+  - [Running Your Local Frigg Instance](#running-your-local-frigg-instance)
+    - [Initialization](#initialization)
+    - [Adding the Miro Integration](#adding-the-miro-integration)
+    - [Example Methods from the Miro Integration](#example-methods-from-the-miro-integration)
+    - [Running the Application](#running-the-application)
 
 ## Setting Up the Local Instance of the Module
 
@@ -76,12 +76,14 @@ npm install
 
 3. **Edit the `.env` File:**
 
-    - Copy your app credentials into the `.env` file:
+    - Copy your `Client ID` and `Client secret` into the `.env` file:
+    ![client credentials](images/credentials.png)
+
 
         ```
         MIRO_CLIENT_ID=<your-client-id>
         MIRO_CLIENT_SECRET=<your-client-secret>
-        REDIRECT_URI=http://localhost:3000/redirect/miro
+        REDIRECT_URI=http://localhost:3000/redirect
 
         ```
 
