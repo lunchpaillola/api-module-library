@@ -25,6 +25,18 @@ describe('Miro API Tests', () => {
     describe('OAuth Flow Tests', () => {
         it('Should generate tokens', async () => {
             expect(api.access_token).toBeTruthy();
+            expect(api.refresh_token).toBeTruthy();
+        });
+
+        it('Should be able to refresh the token', async () => {
+            const oldToken = api.access_token;
+            const oldRefreshToken = api.refresh_token;
+            api.access_token = 'nope';
+            await api.refreshAccessToken({ refresh_token: api.refresh_token });
+            expect(api.access_token).not.toBeNull();
+            expect(api.access_token).not.toEqual(oldToken);
+            expect(api.refresh_token).not.toBeNull();
+            expect(api.refresh_token).not.toEqual(oldRefreshToken);
         });
 
         it('Should handle invalid authorization code', async () => {

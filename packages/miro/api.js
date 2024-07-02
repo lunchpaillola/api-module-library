@@ -32,7 +32,6 @@ class Api extends OAuth2Requester {
         this.access_token = get(params, 'access_token', null);
         this.refresh_token = get(params, 'refresh_token', null);
 
-        //this.authorizationUri = this.miro.getAuthUrl();
         this.authorizationUri = `https://miro.com/oauth/authorize?response_type=code&client_id=${this.client_id}&redirect_uri=${this.redirect_uri}`;
     }
 
