@@ -42,6 +42,11 @@ npm install
 
 ```
 
+```
+npm install --workspace=packages/miro
+
+```
+
 ### Obtain Miro Client Credentials
 
 1. **Create a Developer Team in Miro:**

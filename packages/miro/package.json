@@ -23,6 +23,8 @@
     },
     "dependencies": {
         "@friggframework/core": "^1.1.2",
-        "@mirohq/miro-api": "^2.1.0"
+        "@friggframework/eslint-config": "^1.1.6",
+        "@friggframework/prettier-config": "^1.1.6",
+        "@friggframework/test-environment": "^1.1.6"
     }
 }
