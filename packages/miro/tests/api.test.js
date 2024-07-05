@@ -43,7 +43,7 @@ describe('Miro API Tests', () => {
             try {
                 await api.getTokenFromCode('invalid_code');
             } catch (error) {
-                expect(error.message).toContain('Failed to get token');
+                expect(error.message).toContain('failed');
             }
         });
     });

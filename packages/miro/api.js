@@ -10,7 +10,8 @@ class Api extends OAuth2Requester {
         if (
             !params.client_id ||
             !params.client_secret ||
-            !params.redirect_uri
+            !params.redirect_uri ||
+            !params.scope
         ) {
             throw new Error(
                 'Missing required parameters: client_id, client_secret, redirect_uri'
@@ -125,25 +126,6 @@ class Api extends OAuth2Requester {
     }
 
     // **************************   Other/All   **********************************
-
-    async getTokenFromCode(code) {
-        if (!code || typeof code !== 'string') {
-            throw new Error('Invalid code for getTokenFromCode');
-        }
-
-        try {
-            const options = {
-                url: `${this.tokenUri}?grant_type=authorization_code&client_id=${this.client_id}&client_secret=${this.client_secret}&code=${code}&redirect_uri=${this.redirect_uri}`,
-            };
-
-            const response = await this._post(options);
-            await this.setTokens(response);
-
-            return response;
-        } catch (err) {
-            throw new Error('Failed to get token: ' + err.message);
-        }
-    }
 
     async getAccessTokenContext() {
         const options = {

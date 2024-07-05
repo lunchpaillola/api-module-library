@@ -61,7 +61,7 @@ npm install --workspace=packages/miro
 
 3. **Configure the Redirect URI and Permissions:**
     - Set the Redirect URI for OAuth 2.0 to `http://localhost:3000/redirect/miro`.
-    - For permissions, select `boards:read` , `boards:write` `identity:read`, `identity:write`, `team:read`, `team:write`
+    - For permissions, select `boards:read` , `boards:write` `identity:read`, `team:read`
 
 ### Set Up Environment Variables
 
@@ -87,6 +87,7 @@ Copy your `Client ID` and `Client secret` into the `.env` file:
         ```
         MIRO_CLIENT_ID=<your-client-id>
         MIRO_CLIENT_SECRET=<your-client-secret>
+        MIRO_SCOPE='boards:read identity:read boards:write team:read'
         REDIRECT_URI=http://localhost:3000/redirect
 
         ```
@@ -148,7 +149,8 @@ cd ../../
     ```json
     {
         "MIRO_CLIENT_ID": "<your client id>",
-        "MIRO_CLIENT_SECRET": "<your client secret>"
+        "MIRO_CLIENT_SECRET": "<your client secret>",
+        "MIRO_SCOPE": "boards:read identity:read boards:write team:read"
     }
     ```
 
